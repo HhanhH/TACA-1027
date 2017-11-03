@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taca.mapper.TaskMutexMapper">
+
+  <resultMap id="BaseResultMap" type="com.taca.model.TaskMutex">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="TASK_FIRST_ID" jdbcType="BIGINT" property="taskFirstId" />
+    <result column="TASK_SECOND_ID" jdbcType="BIGINT" property="taskSecondId" />
+    <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    ID, TASK_FIRST_ID, TASK_SECOND_ID, CREATE_TIME, UPDATE_TIME
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from IM_B_TASK_MUTEX
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="getMutexFirstTaskIdList" parameterType="java.lang.Long" resultType="java.lang.Long">
+    select TASK_SECOND_ID from IM_B_TASK_MUTEX where TASK_FIRST_ID=#{id}
+  </select>
+
+  <select id="getMutexSecondTaskIdList" parameterType="java.lang.Long" resultType="java.lang.Long">
+    select TASK_FIRST_ID from IM_B_TASK_MUTEX where TASK_SECOND_ID=#{id}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from IM_B_TASK_MUTEX
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="TaskMutex">
+    insert into IM_B_TASK_MUTEX (ID, TASK_FIRST_ID, TASK_SECOND_ID, 
+      CREATE_TIME, UPDATE_TIME)
+    values (#{id,jdbcType=BIGINT}, #{taskFirstId,jdbcType=BIGINT}, #{taskSecondId,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=DATE}, #{updateTime,jdbcType=DATE})
+  </insert>
+
+  <insert id="insertSelective" parameterType="TaskMutex">
+    insert into IM_B_TASK_MUTEX
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="taskFirstId != null">
+        TASK_FIRST_ID,
+      </if>
+      <if test="taskSecondId != null">
+        TASK_SECOND_ID,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="taskFirstId != null">
+        #{taskFirstId,jdbcType=BIGINT},
+      </if>
+      <if test="taskSecondId != null">
+        #{taskSecondId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="TaskMutex">
+    update IM_B_TASK_MUTEX
+    <set>
+      <if test="taskFirstId != null">
+        TASK_FIRST_ID = #{taskFirstId,jdbcType=BIGINT},
+      </if>
+      <if test="taskSecondId != null">
+        TASK_SECOND_ID = #{taskSecondId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="TaskMutex">
+    update IM_B_TASK_MUTEX
+    set TASK_FIRST_ID = #{taskFirstId,jdbcType=BIGINT},
+      TASK_SECOND_ID = #{taskSecondId,jdbcType=BIGINT},
+      CREATE_TIME = #{createTime,jdbcType=DATE},
+      UPDATE_TIME = #{updateTime,jdbcType=DATE}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <delete id="deleteMutex" parameterType="java.lang.Long">
+  delete
+   from 
+  IM_B_TASK_MUTEX
+  where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  
+  <select id="getMutexTaskByFirstIdAndSecondId" parameterType="TaskMutex" resultType="TaskMutex">
+   select  
+   <include refid="Base_Column_List" />
+    from IM_B_TASK_MUTEX
+    where 
+    TASK_FIRST_ID  =  #{taskFirstId,jdbcType=BIGINT}
+    and TASK_SECOND_ID = #{taskSecondId,jdbcType=BIGINT}
+    
+   </select>
+</mapper>

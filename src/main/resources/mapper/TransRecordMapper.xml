@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taca.mapper.TransRecordMapper">
+
+  <resultMap id="BaseResultMap" type="com.taca.model.TransRecord">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="USERNAME" jdbcType="VARCHAR" property="username" />
+    <result column="STAR_NUMBER" jdbcType="BIGINT" property="starNumber" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="START_TIME" jdbcType="DATE" property="startTime" />
+    <result column="FINISHED_TIME" jdbcType="DATE" property="finishedTime" />
+    <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    ID, USERNAME, STAR_NUMBER, STATUS, START_TIME, FINISHED_TIME, CREATE_TIME, UPDATE_TIME
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from IM_D_TRANS_RECORD
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from IM_D_TRANS_RECORD
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="TransRecord" useGeneratedKeys="true" keyProperty="id">
+    insert into IM_D_TRANS_RECORD (ID, USERNAME, STAR_NUMBER, 
+      STATUS, START_TIME, FINISHED_TIME, 
+      CREATE_TIME, UPDATE_TIME)
+    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{starNumber,jdbcType=BIGINT}, 
+      #{status,jdbcType=VARCHAR}, #{startTime,jdbcType=DATE}, #{finishedTime,jdbcType=DATE},
+      #{createTime,jdbcType=DATE}, #{updateTime,jdbcType=DATE})
+  </insert>
+
+  <insert id="insertSelective" parameterType="TransRecord">
+    insert into IM_D_TRANS_RECORD
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="username != null">
+        USERNAME,
+      </if>
+      <if test="starNumber != null">
+        STAR_NUMBER,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="startTime != null">
+        START_TIME,
+      </if>
+      <if test="finishedTime != null">
+        FINISHED_TIME,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="starNumber != null">
+        #{starNumber,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=DATE},
+      </if>
+      <if test="finishedTime != null">
+        #{finishedTime,jdbcType=DATE},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="TransRecord">
+    update IM_D_TRANS_RECORD
+    <set>
+      <if test="username != null">
+        USERNAME = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="starNumber != null">
+        STAR_NUMBER = #{starNumber,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        START_TIME = #{startTime,jdbcType=DATE},
+      </if>
+      <if test="finishedTime != null">
+        FINISHED_TIME = #{finishedTime,jdbcType=DATE},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="TransRecord">
+    update IM_D_TRANS_RECORD
+    set USERNAME = #{username,jdbcType=VARCHAR},
+      STAR_NUMBER = #{starNumber,jdbcType=BIGINT},
+      STATUS = #{status,jdbcType=VARCHAR},
+      START_TIME = #{startTime,jdbcType=DATE},
+      FINISHED_TIME = #{finishedTime,jdbcType=DATE},
+      CREATE_TIME = #{createTime,jdbcType=DATE},
+      UPDATE_TIME = #{updateTime,jdbcType=DATE}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+
+  <insert id="insertTask" parameterType="TransRecord" useGeneratedKeys="true" keyProperty="id">
+    insert into IM_D_TRANS_RECORD(USERNAME,STAR_NUMBER,STATUS,CREATE_TIME,UPDATE_TIME)  VALUES(#{username},#{starNumber},
+    #{status},#{createTime},#{updateTime})
+  </insert>
+  <update id="updateForTaskAudit" parameterType="TransRecord">
+    update IM_D_TRANS_RECORD
+    set
+    <if test="starNumber != null">
+      STAR_NUMBER = #{starNumber,jdbcType=BIGINT},
+    </if>
+    STATUS = #{status,jdbcType=VARCHAR},
+    FINISHED_TIME = #{finishedTime,jdbcType=DATE},
+    UPDATE_TIME = #{updateTime,jdbcType=DATE}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateForShoppingAudit" parameterType="TransRecord">
+    update IM_D_TRANS_RECORD
+    set
+    <if test="starNumber != null">
+      STAR_NUMBER = #{starNumber,jdbcType=BIGINT},
+    </if>
+    STATUS = #{status,jdbcType=VARCHAR},
+    FINISHED_TIME = #{finishedTime,jdbcType=DATE},
+    UPDATE_TIME = #{updateTime,jdbcType=DATE}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

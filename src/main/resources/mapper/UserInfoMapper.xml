@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taca.mapper.UserInfoMapper">
+
+  <resultMap id="BaseResultMap" type="com.taca.model.UserInfo">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="NICK_NAME" jdbcType="VARCHAR" property="nickName" />
+    <result column="USER_NAME_CN" jdbcType="VARCHAR" property="userNameCn" />
+    <result column="ICON_ADDRESS" jdbcType="VARCHAR" property="iconAddress"/>
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="WX_OPEN_ID" jdbcType="VARCHAR" property="wxOpenId" />
+    <result column="AVAILABLE_STAR" jdbcType="BIGINT" property="availableStar" />
+    <result column="EMAIL_ADDRESS" jdbcType="VARCHAR" property="emailAddress" />
+    <result column="FREEZE_STAR" jdbcType="BIGINT" property="freezeStar" />
+    <result column="HISTORY_STAR" jdbcType="BIGINT" property="historyStar" />
+    <result column="GROUP_ID" jdbcType="BIGINT" property="groupId" />
+    <result column="GROUP_NAME" jdbcType="VARCHAR" property="groupName" />
+    <result column="HONOR_TITLE" jdbcType="VARCHAR" property="honorTitle" />
+    <result column="UM" jdbcType="VARCHAR" property="um" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status"/>
+    <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    ID, USER_NAME, NICK_NAME, USER_NAME_CN, ICON_ADDRESS,PASSWORD, WX_OPEN_ID, AVAILABLE_STAR, EMAIL_ADDRESS,
+    FREEZE_STAR, HISTORY_STAR, GROUP_ID, GROUP_NAME, HONOR_TITLE, UM, STATUS,CREATE_TIME, UPDATE_TIME
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from IM_D_USER_INFO
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="getUserInfoByUM" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from IM_D_USER_INFO
+    where USER_NAME=#{UM,jdbcType=VARCHAR} and STATUS='ACTIVE'
+  </select>
+
+ <select id="getInactiveUserInfoByUM" parameterType="java.lang.String" resultMap="BaseResultMap">
+     select
+     <include refid="Base_Column_List" />
+     from IM_D_USER_INFO
+     where USER_NAME=#{UM,jdbcType=VARCHAR} and STATUS='RESERVED'
+ </select>
+
+  <select id="countForGroupUser" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(ID)
+    from IM_D_USER_INFO
+    where 1=1
+    <if test="userInfo.userName != null and userInfo.userName!=''">
+      and USER_NAME like CONCAT('%',#{userInfo.userName},'%')
+    </if>
+    <if test="userInfo.groupName != null and userInfo.groupName!=''">
+      and GROUP_NAME like CONCAT('%',#{userInfo.groupName},'%')
+    </if>
+    <if test="createTime1 != null and  createTime1!=''">
+      and UNIX_TIMESTAMP(IM_D_USER_INFO.CREATE_TIME) &gt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime1},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    <if test="createTime2 != null and  createTime2!=''">
+      and UNIX_TIMESTAMP(IM_D_USER_INFO.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime2},'%Y-%m-%d %H-%i-%s'))
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from IM_D_USER_INFO
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="UserInfo">
+    insert into IM_D_USER_INFO (ID, USER_NAME, NICK_NAME, 
+      USER_NAME_CN, ICON_ADDRESS,PASSWORD, WX_OPEN_ID,
+      AVAILABLE_STAR, EMAIL_ADDRESS, FREEZE_STAR, 
+      HISTORY_STAR, GROUP_ID, GROUP_NAME, 
+      HONOR_TITLE, UM,STATUS, CREATE_TIME,
+      UPDATE_TIME)
+    values (#{id,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, 
+      #{userNameCn,jdbcType=VARCHAR},#{iconAddress,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{wxOpenId,jdbcType=VARCHAR},
+      #{availableStar,jdbcType=BIGINT}, #{emailAddress,jdbcType=VARCHAR}, #{freezeStar,jdbcType=BIGINT}, 
+      #{historyStar,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT}, #{groupName,jdbcType=VARCHAR}, 
+      #{honorTitle,jdbcType=VARCHAR}, #{um,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE},
+      #{updateTime,jdbcType=DATE})
+  </insert>
+
+  <insert id="insertSelective" parameterType="UserInfo">
+
+    insert into IM_D_USER_INFO
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+
+      <if test="userName != null">
+        USER_NAME,
+      </if>
+      <if test="nickName != null">
+        NICK_NAME,
+      </if>
+      <if test="userNameCn != null">
+        USER_NAME_CN,
+      </if>
+      <if test="password != null">
+        PASSWORD,
+      </if>
+      <if test="wxOpenId != null">
+        WX_OPEN_ID,
+      </if>
+      <if test="availableStar != null">
+        AVAILABLE_STAR,
+      </if>
+      <if test="emailAddress != null">
+        EMAIL_ADDRESS,
+      </if>
+      <if test="freezeStar != null">
+        FREEZE_STAR,
+      </if>
+      <if test="historyStar != null">
+        HISTORY_STAR,
+      </if>
+      <if test="groupId != null">
+        GROUP_ID,
+      </if>
+      <if test="groupName != null">
+        GROUP_NAME,
+      </if>
+      <if test="honorTitle != null">
+        HONOR_TITLE,
+      </if>
+      <if test="um != null">
+        UM,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="status != null and status!=''" >
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="userNameCn != null">
+        #{userNameCn,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="wxOpenId != null">
+        #{wxOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="availableStar != null">
+        #{availableStar,jdbcType=BIGINT},
+      </if>
+      <if test="emailAddress != null">
+        #{emailAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="freezeStar != null">
+        #{freezeStar,jdbcType=BIGINT},
+      </if>
+      <if test="historyStar != null">
+        #{historyStar,jdbcType=BIGINT},
+      </if>
+      <if test="groupId != null">
+        #{groupId,jdbcType=BIGINT},
+      </if>
+      <if test="groupName != null">
+        #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="honorTitle != null">
+        #{honorTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="um != null">
+        #{um,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="status != null and status!=''" >
+        #{status,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="UserInfo">
+    update IM_D_USER_INFO
+    <set>
+      <if test="userName != null">
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        NICK_NAME = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="userNameCn != null">
+        USER_NAME_CN = #{userNameCn,jdbcType=VARCHAR},
+      </if>
+      <if test="iconAddress!=null">
+        ICON_ADDRESS = #{iconAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="wxOpenId != null">
+        WX_OPEN_ID = #{wxOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="availableStar != null">
+        AVAILABLE_STAR = #{availableStar,jdbcType=BIGINT},
+      </if>
+      <if test="emailAddress != null">
+        EMAIL_ADDRESS = #{emailAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="freezeStar != null">
+        FREEZE_STAR = #{freezeStar,jdbcType=BIGINT},
+      </if>
+      <if test="historyStar != null">
+        HISTORY_STAR = #{historyStar,jdbcType=BIGINT},
+      </if>
+      <if test="groupId != null">
+        GROUP_ID = #{groupId,jdbcType=BIGINT},
+      </if>
+      <if test="groupName != null">
+        GROUP_NAME = #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="honorTitle != null">
+        HONOR_TITLE = #{honorTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="um != null">
+        UM = #{um,jdbcType=VARCHAR},
+      </if>
+      <if test="status!=null">
+        STATUS=#{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByUMSelective" parameterType="UserInfo">
+    update IM_D_USER_INFO
+    <set>
+      <if test="nickName != null">
+        NICK_NAME = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="userNameCn != null">
+        USER_NAME_CN = #{userNameCn,jdbcType=VARCHAR},
+      </if>
+      <if test="iconAddress!=null">
+        ICON_ADDRESS = #{iconAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="wxOpenId != null">
+        WX_OPEN_ID = #{wxOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="availableStar != null">
+        AVAILABLE_STAR = #{availableStar,jdbcType=BIGINT},
+      </if>
+      <if test="emailAddress != null">
+        EMAIL_ADDRESS = #{emailAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="freezeStar != null">
+        FREEZE_STAR = #{freezeStar,jdbcType=BIGINT},
+      </if>
+      <if test="historyStar != null">
+        HISTORY_STAR = #{historyStar,jdbcType=BIGINT},
+      </if>
+      <if test="groupId != null">
+        GROUP_ID = #{groupId,jdbcType=BIGINT},
+      </if>
+      <if test="groupName != null">
+        GROUP_NAME = #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="honorTitle != null">
+        HONOR_TITLE = #{honorTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="um != null">
+        UM = #{um,jdbcType=VARCHAR},
+      </if>
+      <if test="status!=null">
+        STATUS=#{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      </if>
+    </set>
+    where USER_NAME = #{userName,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="UserInfo">
+    update IM_D_USER_INFO
+    set USER_NAME = #{userName,jdbcType=VARCHAR},
+      NICK_NAME = #{nickName,jdbcType=VARCHAR},
+      USER_NAME_CN = #{userNameCn,jdbcType=VARCHAR},
+      ICON_ADDRESS=#{iconAddress,jdbcType=VARCHAR},
+      PASSWORD = #{password,jdbcType=VARCHAR},
+      WX_OPEN_ID = #{wxOpenId,jdbcType=VARCHAR},
+      AVAILABLE_STAR = #{availableStar,jdbcType=BIGINT},
+      EMAIL_ADDRESS = #{emailAddress,jdbcType=VARCHAR},
+      FREEZE_STAR = #{freezeStar,jdbcType=BIGINT},
+      HISTORY_STAR = #{historyStar,jdbcType=BIGINT},
+      GROUP_ID = #{groupId,jdbcType=BIGINT},
+      GROUP_NAME = #{groupName,jdbcType=VARCHAR},
+      HONOR_TITLE = #{honorTitle,jdbcType=VARCHAR},
+      UM = #{um,jdbcType=VARCHAR},
+      STATUS=#{status,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=DATE},
+      UPDATE_TIME = #{updateTime,jdbcType=DATE}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="queryHonorRanking" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from IM_D_USER_INFO 
+    where STATUS = 'ACTIVE'
+    ORDER BY HISTORY_STAR  DESC limit  10
+  </select>
+
+  <!--查询上个月的-->
+  <select id="queryHonorMonth" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" />
+    FROM im_d_user_info WHERE PERIOD_DIFF( date_format( now( ) , '%Y%m' ) , date_format( UPDATE_TIME, '%Y%m' ) ) =1
+  </select>
+
+  <!--查询上个季度的-->
+  <select id="queryHonorMonths" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from im_d_user_info where QUARTER(UPDATE_TIME)=QUARTER(DATE_SUB(now(),interval 1 QUARTER));
+  </select>
+
+  <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+
+    select
+    <include refid="Base_Column_List" />
+    from IM_D_USER_INFO
+    where USER_NAME = #{userName,jdbcType=VARCHAR}
+  </select>
+
+  <select id="count" parameterType="com.taca.model.UserInfo" resultType="java.lang.Integer">
+    select count(ID)
+    from IM_D_USER_INFO
+    where 1=1
+    <if test="userName != null and  userName!=''">
+      and USER_NAME like CONCAT('%',#{userName},'%')
+    </if>
+  </select>
+
+  <select id="userCount" parameterType="com.taca.model.UserInfo" resultType="java.lang.Integer">
+    select count(ID)
+    from IM_D_USER_INFO
+    where STATUS = 'ACTIVE'
+    <if test="userName != null and  userName!=''">
+      and USER_NAME like CONCAT('%',#{userName},'%')
+    </if>
+  </select>
+
+  <select id="userCountByMap" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(ID)
+    from IM_D_USER_INFO
+    where STATUS = 'ACTIVE'
+    <if test="userInfo.userName != null and  userInfo.userName!=''">
+      and USER_NAME like CONCAT('%',#{userInfo.userName},'%')
+    </if>
+    <if test="userInfo.groupName != null and  userInfo.userName!=''">
+      and GROUP_NAME like CONCAT('%',#{userInfo.groupName},'%')
+    </if>
+    <if test="createTime1 != null and  createTime1!=''">
+      and UNIX_TIMESTAMP(IM_D_USER_INFO.CREATE_TIME) &gt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime1},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    <if test="createTime2 != null and  createTime2!=''">
+      and UNIX_TIMESTAMP(IM_D_USER_INFO.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime2},'%Y-%m-%d %H-%i-%s'))
+    </if>
+  </select>
+
+  <select id="queryUserList" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+
+    from IM_D_USER_INFO
+    where STATUS = 'ACTIVE'
+    <if test="userInfo.userName != null and  userInfo.userName!=''">
+      and USER_NAME like CONCAT('%',#{userInfo.userName},'%')
+    </if>
+    <if test="userInfo.groupName != null and  userInfo.groupName!='' and userInfo.groupName != 'all'">
+      and GROUP_NAME like CONCAT('%',#{userInfo.groupName},'%')
+    </if>
+    <if test="createTime1 != null and  createTime1!=''">
+      and UNIX_TIMESTAMP(IM_D_USER_INFO.CREATE_TIME) &gt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime1},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    <if test="createTime2 != null and  createTime2!=''">
+      and UNIX_TIMESTAMP(IM_D_USER_INFO.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime2},'%Y-%m-%d %H-%i-%s'))
+    </if>
+
+    order by STATUS ASC
+    limit
+    #{page.dbIndex},#{page.dbNumber}
+  </select>
+
+  <select id="queryUserListForGroup" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+
+    from IM_D_USER_INFO
+    where 1=1
+    <if test="userInfo.userName != null and userInfo.userName!=''">
+      and USER_NAME like CONCAT('%',#{userInfo.userName},'%')
+    </if>
+    <if test="userInfo.groupName != null and  userInfo.groupName!='' and userInfo.groupName != 'all'">
+      and GROUP_NAME like CONCAT('%',#{userInfo.groupName},'%')
+    </if>
+    <if test="createTime1 != null and  createTime1!=''">
+      and UNIX_TIMESTAMP(IM_D_USER_INFO.CREATE_TIME) &gt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime1},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    <if test="createTime2 != null and  createTime2!=''">
+      and UNIX_TIMESTAMP(IM_D_USER_INFO.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime2},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    order by STATUS ASC
+    limit
+    #{page.dbIndex},#{page.dbNumber}
+  </select>
+
+  <select id="countForArmory" parameterType="com.taca.model.UserInfo" resultType="java.lang.Integer">
+    select count(ID)
+    from IM_D_USER_INFO
+    where STATUS = 'ACTIVE'
+
+
+  </select>
+
+  <select id="queryUserArmory" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+
+    from IM_D_USER_INFO
+    where STATUS='ACTIVE'
+    order by HISTORY_STAR DESC
+    limit
+    #{page.dbIndex},#{page.dbNumber}
+  </select>
+  <update id="active" parameterType="java.util.Map"  >
+    update IM_D_USER_INFO
+    <set>
+      STATUS = #{status}
+    </set>
+    where ID = #{id}
+  </update>
+  <update id="updateIconAddress" parameterType="com.taca.model.UserInfo">
+    update IM_D_USER_INFO
+    <set>
+      ICON_ADDRESS = #{iconAddress,jdbcType=VARCHAR}
+    </set>
+    where USER_NAME=#{userName,jdbcType=VARCHAR}
+  </update>
+  <select id="getUserByUMWithNoStatus" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from IM_D_USER_INFO
+    where USER_NAME=#{UM,jdbcType=VARCHAR}
+  </select>
+
+  <insert id="batchAdd" parameterType="UserInfo">
+
+    insert into IM_D_USER_INFO (USER_NAME,USER_NAME_CN,GROUP_ID, GROUP_NAME,UM,STATUS )
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.um},#{item.userNameCn},#{item.groupId},#{item.groupName},#{item.um},'RESERVED')
+    </foreach>
+  </insert>
+
+  <update id="updateForTaskAudit" parameterType="UserInfo">
+    update IM_D_USER_INFO
+    set
+    AVAILABLE_STAR = #{availableStar,jdbcType=BIGINT},
+    HISTORY_STAR = #{historyStar,jdbcType=BIGINT},
+    HONOR_TITLE = #{honorTitle,jdbcType=VARCHAR},
+    UPDATE_TIME = #{updateTime,jdbcType=DATE}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateForShoppingAudit" parameterType="UserInfo">
+    update IM_D_USER_INFO
+    set
+
+    <if test="availableStar != null">
+      AVAILABLE_STAR = #{availableStar,jdbcType=BIGINT},
+    </if>
+    FREEZE_STAR = #{freezeStar,jdbcType=BIGINT},
+    UPDATE_TIME = #{updateTime,jdbcType=DATE}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="getMonthList" parameterType="java.util.Map" resultType="com.taca.model.UserInfo">
+    select
+    ID as id,im_d_user_info.USER_NAME as userName,HONOR_TITLE as honorTitle,
+    USER_NAME_CN as userNameCn,UM as um,
+    m.COUNT as historyStar
+    FROM im_d_user_info LEFT JOIN
+    (SELECT t1.USER_NAME,SUM(ACT_STAR_NUMBER) as COUNT
+    FROM
+    im_d_receive_task t1,im_d_submissions t2
+    WHERE
+    t1.ID = t2.RECEIVE_TASK_ID and t2.STATUS = 'AGREE'
+    <if test="time1 != null and  time1!=''">
+      and UNIX_TIMESTAMP(t1.CREATE_TIME) &gt;= UNIX_TIMESTAMP(STR_TO_DATE(#{time1},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    <if test="time2 != null and  time2!=''">
+      and UNIX_TIMESTAMP(t1.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{time2},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    GROUP BY t1.USER_NAME) m
+    ON im_d_user_info.USER_NAME =m. USER_NAME
+    WHERE im_d_user_info.STATUS ='ACTIVE'
+    ORDER BY COUNT DESC
+    limit
+    #{page.dbIndex},#{page.dbNumber}
+  </select>
+  <select id="groupList" resultType="java.lang.String">
+    select distinct IM_D_USER_INFO.GROUP_NAME as groupName
+    from IM_D_USER_INFO
+    where IM_D_USER_INFO.GROUP_NAME IS NOT NULL
+
+  </select>
+  <select id="getUserEmailList" resultType="java.lang.String">
+    select  EMAIL_ADDRESS from IM_D_USER_INFO where STATUS='ACTIVE'
+  </select>
+  
+ 	<select id="getGroupNameByGroupId" parameterType="java.lang.Long" resultType="java.lang.String">
+       select GROUP_NAME 
+       from 
+       (select GROUP_ID,ANY_VALUE(GROUP_NAME) as GROUP_NAME from IM_D_USER_INFO GROUP BY GROUP_ID ) m
+       where m.GROUP_ID = #{groupId}
+  </select>
+  
+  	<select id="getGroupIdByGroupName" parameterType="java.lang.String" resultType="java.lang.Long">
+       select GROUP_ID 
+       from 
+       (select GROUP_ID,ANY_VALUE(GROUP_NAME) as GROUP_NAME from IM_D_USER_INFO GROUP BY GROUP_ID ) m
+       where m.GROUP_NAME = #{groupName}
+    </select>
+    
+    <update id="updatePwd" parameterType="UserInfo">
+         update IM_D_USER_INFO
+         set password = #{password}
+         where USER_NAME = #{userName}
+    </update>
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.springboot.mapper.key.KeyMapper">
+
+	<select id="getTableValues" resultType="cn.springboot.config.db.table.Key">
+		<foreach collection="list" item="item" separator="union all">
+			SELECT max(${item.id}) id, '${item.tableName}' tableName FROM ${item.tableName}
+			<where>
+				<if test="item.machineCode != null and item.machineCode != ''"> ${item.id} like '${item.machineCode}%'</if>
+			</where>
+		</foreach>
+	</select>
+
+	<select id="getTables" resultType="cn.springboot.config.db.table.Key">
+		select c.column_name id , UPPER(t.table_name) tableName from information_schema.table_constraints as t,information_schema.key_column_usage as c where t.table_name = c.table_name and t.table_schema =  database() and t.constraint_type = 'PRIMARY KEY'
+	</select>
+
+</mapper>

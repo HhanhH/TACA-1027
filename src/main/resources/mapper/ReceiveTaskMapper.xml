@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taca.mapper.ReceiveTaskMapper">
+
+  <resultMap id="BaseResultMap" type="com.taca.model.ReceiveTask">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="TASK_ID" jdbcType="BIGINT" property="taskId" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName"/>
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="ACT_STAR_NUMBER" jdbcType="BIGINT" property="actStarNumber" />
+    <result column="PRE_STAR_NUMBER" jdbcType="BIGINT" property="preStarNumber" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="TRANS_ID" jdbcType="BIGINT" property="transId" />
+    <result column="START_TIME" jdbcType="DATE" property="startTime" />
+    <result column="EXPECTED_TIME" jdbcType="DATE" property="expectedTime" />
+    <result column="FINISHED_TIME" jdbcType="DATE" property="finishedTime" />
+    <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+  </resultMap>
+
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="ReceiveTask">
+    <result column="CONTENT" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    ID, TASK_ID, USER_NAME,NAME, ACT_STAR_NUMBER, PRE_STAR_NUMBER, STATUS, TRANS_ID, START_TIME,
+    EXPECTED_TIME, FINISHED_TIME, CREATE_TIME, UPDATE_TIME
+  </sql>
+
+  <sql id="Blob_Column_List">
+    CONTENT
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from IM_D_RECEIVE_TASK
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="getReceiveCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*) from IM_D_RECEIVE_TASK where TASK_ID=#{id,jdbcType=BIGINT} and USER_NAME=#{UM,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByIdAndUM" parameterType="java.util.Map" resultMap="ResultMapWithBLOBs">
+    select * from IM_D_RECEIVE_TASK where TASK_ID=#{id,jdbcType=BIGINT} and USER_NAME=#{UM,jdbcType=VARCHAR} and (STATUS='PENDING' or STATUS='PROCEEDING')
+  </select>
+
+  <select id="getTaskByUM" parameterType="java.lang.String" resultType="java.lang.Long">
+    select TASK_ID from IM_D_RECEIVE_TASK where (USER_NAME=#{UM,jdbcType=VARCHAR} and STATUS='PENDING') or (USER_NAME=#{UM,jdbcType=VARCHAR} and STATUS='PROCEEDING')
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from IM_D_RECEIVE_TASK
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="ReceiveTask">
+    insert into IM_D_RECEIVE_TASK (ID, TASK_ID,USER_NAME, NAME,
+      ACT_STAR_NUMBER, PRE_STAR_NUMBER, STATUS, 
+      TRANS_ID, START_TIME, EXPECTED_TIME, 
+      FINISHED_TIME, CREATE_TIME, UPDATE_TIME, 
+      CONTENT)
+    values (#{id,jdbcType=BIGINT}, #{taskId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},
+      #{actStarNumber,jdbcType=BIGINT}, #{preStarNumber,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, 
+      #{transId,jdbcType=BIGINT}, #{startTime,jdbcType=DATE}, #{expectedTime,jdbcType=DATE},
+      #{finishedTime,jdbcType=DATE}, #{createTime,jdbcType=DATE}, #{updateTime,jdbcType=DATE},
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+
+  <insert id="insertSelective" parameterType="ReceiveTask">
+    insert into IM_D_RECEIVE_TASK
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="taskId != null">
+        TASK_ID,
+      </if>
+      <if test="userName!=null">
+        USER_NAME,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="actStarNumber != null">
+        ACT_STAR_NUMBER,
+      </if>
+      <if test="preStarNumber != null">
+        PRE_STAR_NUMBER,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="transId != null">
+        TRANS_ID,
+      </if>
+      <if test="startTime != null">
+        START_TIME,
+      </if>
+      <if test="expectedTime != null">
+        EXPECTED_TIME,
+      </if>
+      <if test="finishedTime != null">
+        FINISHED_TIME,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="content != null">
+        CONTENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="taskId != null">
+        #{taskId,jdbcType=BIGINT},
+      </if>
+      <if test="userName!=null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="actStarNumber != null">
+        #{actStarNumber,jdbcType=BIGINT},
+      </if>
+      <if test="preStarNumber != null">
+        #{preStarNumber,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="transId != null">
+        #{transId,jdbcType=BIGINT},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=DATE},
+      </if>
+      <if test="expectedTime != null">
+        #{expectedTime,jdbcType=DATE},
+      </if>
+      <if test="finishedTime != null">
+        #{finishedTime,jdbcType=DATE},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="ReceiveTask">
+    update IM_D_RECEIVE_TASK
+    <set>
+      <if test="taskId != null">
+        TASK_ID = #{taskId,jdbcType=BIGINT},
+      </if>
+      <if test="userName!=null">
+        USER_NAME=#{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="actStarNumber != null">
+        ACT_STAR_NUMBER = #{actStarNumber,jdbcType=BIGINT},
+      </if>
+      <if test="preStarNumber != null">
+        PRE_STAR_NUMBER = #{preStarNumber,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="transId != null">
+        TRANS_ID = #{transId,jdbcType=BIGINT},
+      </if>
+      <if test="startTime != null">
+        START_TIME = #{startTime,jdbcType=DATE},
+      </if>
+      <if test="expectedTime != null">
+        EXPECTED_TIME = #{expectedTime,jdbcType=DATE},
+      </if>
+      <if test="finishedTime != null">
+        FINISHED_TIME = #{finishedTime,jdbcType=DATE},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="content != null">
+        CONTENT = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="ReceiveTask">
+    update IM_D_RECEIVE_TASK
+    set TASK_ID = #{taskId,jdbcType=BIGINT},
+    USER_NAME=#{userName,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      ACT_STAR_NUMBER = #{actStarNumber,jdbcType=BIGINT},
+      PRE_STAR_NUMBER = #{preStarNumber,jdbcType=BIGINT},
+      STATUS = #{status,jdbcType=VARCHAR},
+      TRANS_ID = #{transId,jdbcType=BIGINT},
+      START_TIME = #{startTime,jdbcType=DATE},
+      EXPECTED_TIME = #{expectedTime,jdbcType=DATE},
+      FINISHED_TIME = #{finishedTime,jdbcType=DATE},
+      CREATE_TIME = #{createTime,jdbcType=DATE},
+      UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      CONTENT = #{content,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="ReceiveTask">
+    update IM_D_RECEIVE_TASK
+    set TASK_ID = #{taskId,jdbcType=BIGINT},
+    USER_NAME=#{userName,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      ACT_STAR_NUMBER = #{actStarNumber,jdbcType=BIGINT},
+      PRE_STAR_NUMBER = #{preStarNumber,jdbcType=BIGINT},
+      STATUS = #{status,jdbcType=VARCHAR},
+      TRANS_ID = #{transId,jdbcType=BIGINT},
+      START_TIME = #{startTime,jdbcType=DATE},
+      EXPECTED_TIME = #{expectedTime,jdbcType=DATE},
+      FINISHED_TIME = #{finishedTime,jdbcType=DATE},
+      CREATE_TIME = #{createTime,jdbcType=DATE},
+      UPDATE_TIME = #{updateTime,jdbcType=DATE}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByUser" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from IM_D_RECEIVE_TASK
+    where USER_NAME=#{userName}
+    ORDER BY STATUS DESC
+  </select>
+
+  <select id="selectTaskUser" parameterType="java.lang.String" resultType="java.lang.String">
+    select distinct(USER_NAME) from IM_D_RECEIVE_TASK where NAME=#{taskName}
+  </select>
+
+  <update id="updateTaskStatus" parameterType="ReceiveTask">
+    update IM_D_RECEIVE_TASK
+    SET   STATUS = #{status,jdbcType=VARCHAR}, UPDATE_TIME = #{updateTime,jdbcType=DATE},
+    TRANS_ID=#{transId} WHERE  ID=${id}
+  </update>
+
+  <select id="selectReceiveTask" resultMap="BaseResultMap"  parameterType="java.lang.Long">
+    select
+    <include refid="Base_Column_List" />
+    from IM_D_RECEIVE_TASK WHERE  ID=#{Id}
+  </select>
+
+  <select id="count" parameterType="java.util.Map"
+          resultType="java.lang.Integer">
+    select count(ID)
+    from IM_D_RECEIVE_TASK
+    where 1=1
+    <if test="receiveTask.userName != null and receiveTask.userName !=''">
+      and USER_NAME like CONCAT('%',#{receiveTask.userName},'%')
+    </if>
+    <if test="receiveTask.name != null and receiveTask.name !=''">
+      and NAME like CONCAT('%',#{receiveTask.name},'%')
+    </if>
+    <if test="receiveTask.status != null and receiveTask.status !='' and receiveTask.status != 'all'">
+      and STATUS  = #{receiveTask.status}
+    </if>
+    <if test="createTime1 != null and  createTime1!=''">
+      and UNIX_TIMESTAMP(IM_D_RECEIVE_TASK.CREATE_TIME) &gt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime1},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    <if test="createTime2 != null and  createTime2!=''">
+      and UNIX_TIMESTAMP(IM_D_RECEIVE_TASK.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime2},'%Y-%m-%d %H-%i-%s'))
+    </if>
+
+  </select>
+
+  <select id="countReceive"
+          resultType="java.lang.Integer">
+    select count(ID)
+    from IM_D_RECEIVE_TASK
+  </select>
+
+  <select id="countForAudit" parameterType="com.taca.model.ReceiveTask"
+          resultType="java.lang.Integer">
+    select count(ID)
+    from IM_D_RECEIVE_TASK
+    where
+    STATUS = #{status,jdbcType=VARCHAR}
+
+
+  </select>
+
+  <select id="getList" parameterType="java.util.Map" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from IM_D_RECEIVE_TASK
+    where 1=1
+    <if test="receiveTask.userName != null and receiveTask.userName !=''">
+      and USER_NAME like CONCAT('%',#{receiveTask.userName},'%')
+    </if>
+    <if test="receiveTask.name != null and receiveTask.name !=''">
+      and NAME like CONCAT('%',#{receiveTask.name},'%')
+    </if>
+    <if test="receiveTask.status != null and receiveTask.status !='' and receiveTask.status != 'all'">
+      and STATUS  = #{receiveTask.status}
+    </if>
+    <if test="createTime1 != null and  createTime1!=''">
+      and UNIX_TIMESTAMP(IM_D_RECEIVE_TASK.CREATE_TIME) &gt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime1},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    <if test="createTime2 != null and  createTime2!=''">
+      and UNIX_TIMESTAMP(IM_D_RECEIVE_TASK.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime2},'%Y-%m-%d %H-%i-%s'))
+    </if>
+
+    order by STATUS DESC
+    limit
+    #{page.dbIndex},#{page.dbNumber}
+  </select>
+
+
+
+  <select id="getAuditList" parameterType="java.util.Map" resultMap="ResultMapWithBLOBs">
+
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from IM_D_RECEIVE_TASK
+    where STATUS = #{status,jdbcType=VARCHAR}
+    <if test="receiveTask.name != null">
+      and NAME like CONCAT('%',#{receiveTask.name},'%')
+    </if>
+    limit
+    #{page.dbIndex},#{page.dbNumber}
+  </select>
+
+
+  <select id="queryList" parameterType="com.taca.model.ReceiveTask" resultMap="ResultMapWithBLOBs">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      This element was generated on Thu Sep 21 18:03:31 CST 2017.
+    -->
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from IM_D_RECEIVE_TASK
+    where 1=1
+    <if test="receiveTask.name != null">
+      and NAME like CONCAT('%',#{receiveTask.name},'%')
+    </if>
+  </select>
+
+  <update id="audit" parameterType="ReceiveTask" >
+    update IM_D_RECEIVE_TASK
+    set  
+     <if test="actStarNumber != null">
+        ACT_STAR_NUMBER = #{actStarNumber,jdbcType=BIGINT},
+      </if>
+     
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      
+     
+      <if test="finishedTime != null">
+        FINISHED_TIME = #{finishedTime,jdbcType=DATE},
+      </if>
+      
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=DATE}
+      </if>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="getUserNameByReceiveId" parameterType="java.lang.Long" resultType="java.lang.String">
+    select USER_NAME
+    from IM_D_RECEIVE_TASK
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="getTransIdByReceiveId" parameterType="java.lang.Long" resultType="java.lang.Long">
+    select TRANS_ID
+    from IM_D_RECEIVE_TASK
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="getMonthList" parameterType="java.util.Map" resultType="ReceiveTask">
+
+    SELECT NAME as name,SUM(ACT_STAR_NUMBER) as actStarNumber
+    FROM
+    im_d_receive_task t1,im_d_submissions t2
+    WHERE
+    t1.ID = t2.RECEIVE_TASK_ID and t2.STATUS = 'AGREE'
+    AND t1.UPDATE_TIME BETWEEN '${monthBegin}' AND '${monthEnd}'
+    GROUP BY t1.NAME
+
+    ORDER BY actStarNumber DESC
+    limit
+    #{page.dbIndex},#{page.dbNumber}
+
+  </select>
+
+  <select id="getById"  parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from IM_D_RECEIVE_TASK
+    where ID =  #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="getUserListForSendEmail" resultType="java.lang.String">
+      select USER_NAME from IM_D_RECEIVE_TASK 
+      where 
+      DATE(DATE_FORMAT(EXPECTED_TIME,'%y-%m-%d')) = DATE(DATE_ADD( DATE_FORMAT(NOW(),'%y-%m-%d'),INTERVAL 3 DAY)) 
+      and STATUS ='PROCEEDING';
+  </select>
+    <select id="getReceiveTaskListFin" resultType="ReceiveTask">
+      select 
+      USER_NAME as userName
+      from IM_D_RECEIVE_TASK 
+      where 
+      DATE(DATE_FORMAT(EXPECTED_TIME,'%y-%m-%d')) = DATE( DATE_FORMAT(NOW(),'%y-%m-%d')) 
+      and STATUS ='PROCEEDING';
+  </select>
+  
+     <select id="getTimeOutReceiveTask" resultType="ReceiveTask">
+      select 
+     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+      from IM_D_RECEIVE_TASK 
+      where 
+      DATE(DATE_FORMAT(EXPECTED_TIME,'%y-%m-%d')) <![CDATA[<]]> DATE( DATE_FORMAT(NOW(),'%y-%m-%d')) 
+      and STATUS !='EXPIRED' and STATUS!='FINISHED'
+  </select>
+  
+  
+  
+  
+</mapper>

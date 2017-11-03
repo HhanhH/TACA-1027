@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taca.mapper.NoticeInfoMapper">
+
+  <resultMap id="BaseResultMap" type="com.taca.model.NoticeInfo">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="TITLE" jdbcType="VARCHAR" property="title" />
+    <result column="ICON_ADDRESS" jdbcType="VARCHAR" property="iconAddress" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+  </resultMap>
+
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="NoticeInfo">
+    <result column="CONTENT" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    ID, TITLE, ICON_ADDRESS, STATUS, CREATE_TIME, UPDATE_TIME
+  </sql>
+
+  <sql id="Blob_Column_List">
+    CONTENT
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from IM_B_NOTICE_INFO
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="countByMap" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(ID)
+    from IM_B_NOTICE_INFO
+    where 1=1
+    <if test="noticeInfo.title != null">
+      and TITLE like CONCAT('%',#{noticeInfo.title},'%')
+    </if>
+    <if test="createTime1 != null and  createTime1!=''">
+      and UNIX_TIMESTAMP(IM_B_NOTICE_INFO.CREATE_TIME) &gt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime1},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    <if test="createTime2 != null and  createTime2!=''">
+      and UNIX_TIMESTAMP(IM_B_NOTICE_INFO.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime2},'%Y-%m-%d %H-%i-%s'))
+    </if>
+
+  </select>
+
+  <select id="getNoticeList" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from IM_B_NOTICE_INFO where STATUS='ACTIVE'
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from IM_B_NOTICE_INFO
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="NoticeInfo">
+    insert into IM_B_NOTICE_INFO (ID, TITLE, ICON_ADDRESS, 
+      STATUS, CREATE_TIME, UPDATE_TIME, 
+      CONTENT)
+    values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{iconAddress,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}, #{updateTime,jdbcType=DATE},
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+
+  <insert id="insertSelective" parameterType="NoticeInfo">
+    insert into IM_B_NOTICE_INFO
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="title != null">
+        TITLE,
+      </if>
+      <if test="iconAddress != null">
+        ICON_ADDRESS,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="content != null">
+        CONTENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="iconAddress != null">
+        #{iconAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="NoticeInfo">
+    update IM_B_NOTICE_INFO
+    <set>
+      <if test="title != null">
+        TITLE = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="iconAddress != null">
+        ICON_ADDRESS = #{iconAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="content != null">
+        CONTENT = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="NoticeInfo">
+    update IM_B_NOTICE_INFO
+    set TITLE = #{title,jdbcType=VARCHAR},
+      ICON_ADDRESS = #{iconAddress,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=DATE},
+      UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      CONTENT = #{content,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="NoticeInfo">
+    update IM_B_NOTICE_INFO
+    set TITLE = #{title,jdbcType=VARCHAR},
+      ICON_ADDRESS = #{iconAddress,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=DATE},
+      UPDATE_TIME = #{updateTime,jdbcType=DATE}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="count" parameterType="NoticeInfo" resultType="java.lang.Integer">
+    select count(ID)
+    from IM_B_NOTICE_INFO
+    where 1=1
+    <if test="title != null">
+      and TITLE like CONCAT('%',#{title},'%')
+    </if>
+
+  </select>
+
+  <select id="getListByPage" parameterType="java.util.Map" resultType="NoticeInfo">
+    select ID, TITLE, ICON_ADDRESS as iconAddress, STATUS , CREATE_TIME as createTime, UPDATE_TIME as updateTime,CONTENT
+    from IM_B_NOTICE_INFO
+    where 1=1
+    <if test="noticeInfo.title != null">
+      and TITLE like CONCAT('%',#{noticeInfo.title},'%')
+    </if>
+    <if test="createTime1 != null and  createTime1!=''">
+      and UNIX_TIMESTAMP(IM_B_NOTICE_INFO.CREATE_TIME) &gt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime1},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    <if test="createTime2 != null and  createTime2!=''">
+      and UNIX_TIMESTAMP(IM_B_NOTICE_INFO.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime2},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    order by STATUS  ASC
+    limit
+    #{page.dbIndex},#{page.dbNumber}
+
+  </select>
+</mapper>

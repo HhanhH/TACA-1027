@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taca.mapper.AuditTaskMapper">
+  <resultMap id="BaseResultMap" type="com.taca.vo.AuditTask">
+    
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="TASK_ID" jdbcType="BIGINT" property="taskId" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+      <result column="USER_NAME" jdbcType="VARCHAR" property="userName"></result>
+    <result column="ACT_STAR_NUMBER" jdbcType="BIGINT" property="actStarNumber" />
+    <result column="PRE_STAR_NUMBER" jdbcType="BIGINT" property="preStarNumber" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="TRANS_ID" jdbcType="BIGINT" property="transId" />
+    <result column="START_TIME" jdbcType="DATE" property="startTime" />
+    <result column="EXPECTED_TIME" jdbcType="DATE" property="expectedTime" />
+    <result column="FINISHED_TIME" jdbcType="DATE" property="finishedTime" />
+    <result column="FILE_ADDRESS" jdbcType="VARCHAR" property="fileAddress" />
+    <result column="MESSAGE" jdbcType="LONGVARCHAR" property="message" />
+     <result column="FEEDBACK_WAY" jdbcType="LONGVARCHAR" property="feedBackWay" />
+    
+  </resultMap>
+  
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.taca.vo.AuditTask">
+    <result column="RECEIVE_BOOK" jdbcType="VARCHAR" property="receiveBook" />
+    <result column="CONTENT" jdbcType="VARCHAR" property="content" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    IM_D_RECEIVE_TASK.ID, TASK_ID, IM_D_RECEIVE_TASK.NAME, IM_D_RECEIVE_TASK.USER_NAME, ACT_STAR_NUMBER, PRE_STAR_NUMBER, TRANS_ID, START_TIME,
+    EXPECTED_TIME, FINISHED_TIME,FILE_ADDRESS, MESSAGE, IM_D_RECEIVE_TASK.CONTENT,RECEIVE_BOOK
+  </sql>
+  
+
+  
+
+<select id="countForAudit" parameterType="java.util.Map"
+	resultType="java.lang.Integer">
+	select count(IM_D_RECEIVE_TASK.ID)
+	from IM_D_RECEIVE_TASK,IM_D_SUBMISSIONS
+	where 
+	IM_D_RECEIVE_TASK.STATUS = 'PENDING'
+	and IM_D_SUBMISSIONS.STATUS IS NULL
+	and IM_D_RECEIVE_TASK.ID = IM_D_SUBMISSIONS.RECEIVE_TASK_ID
+	<if test="auditTask.name!=null and auditTask.name!=''">
+	and IM_D_RECEIVE_TASK.NAME like CONCAT('%',#{auditTask.name},'%')
+	</if>
+	<if test="auditTask.userName!=null and auditTask.userName!=''">
+	and IM_D_RECEIVE_TASK.USER_NAME like CONCAT('%',#{auditTask.userName},'%')
+	</if>
+	<if test="createTime1 != null and  createTime1!=''">
+      and UNIX_TIMESTAMP(IM_D_RECEIVE_TASK.CREATE_TIME) &gt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime1},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    <if test="createTime2 != null and  createTime2!=''">
+      and UNIX_TIMESTAMP(IM_D_RECEIVE_TASK.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime2},'%Y-%m-%d %H-%i-%s'))
+    </if>
+</select>
+
+
+ 
+  
+  <select id="getAuditList" parameterType="java.util.Map" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    IM_D_SUBMISSIONS.STATUS,IM_B_TASK_INFO.FEEDBACK_WAY
+    from IM_D_RECEIVE_TASK,IM_D_SUBMISSIONS,IM_B_TASK_INFO
+    where 
+    IM_D_RECEIVE_TASK.STATUS = #{auditTask.status,jdbcType=VARCHAR}
+    and IM_D_SUBMISSIONS.STATUS IS NULL
+    and IM_D_RECEIVE_TASK.ID = IM_D_SUBMISSIONS.RECEIVE_TASK_ID
+    and IM_D_RECEIVE_TASK.TASK_ID = IM_B_TASK_INFO.ID
+   <if test="auditTask.name!=null and auditTask.name!=''">
+	and IM_D_RECEIVE_TASK.NAME like CONCAT('%',#{auditTask.name},'%')
+	</if>
+	<if test="auditTask.userName!=null and auditTask.userName!=''">
+	and IM_D_RECEIVE_TASK.USER_NAME like CONCAT('%',#{auditTask.userName},'%')
+	</if>
+	<if test="createTime1 != null and  createTime1!=''">
+      and UNIX_TIMESTAMP(IM_D_RECEIVE_TASK.CREATE_TIME) &gt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime1},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    <if test="createTime2 != null and  createTime2!=''">
+      and UNIX_TIMESTAMP(IM_D_RECEIVE_TASK.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime2},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    limit
+    #{page.dbIndex},#{page.dbNumber}
+  </select>
+  
+  <select id="countHis" parameterType="com.taca.model.ReceiveTask"
+	resultType="java.lang.Integer">
+	select count(IM_D_RECEIVE_TASK.ID)
+	from IM_D_RECEIVE_TASK,IM_D_SUBMISSIONS
+	where 
+	IM_D_SUBMISSIONS.STATUS IN ('AGREE','REJECT')
+	and IM_D_RECEIVE_TASK.ID = IM_D_SUBMISSIONS.RECEIVE_TASK_ID
+	<if test="auditTask.name!=null and auditTask.name!=''">
+	and IM_D_RECEIVE_TASK.NAME like CONCAT('%',#{auditTask.name},'%')
+	</if>
+	<if test="auditTask.userName!=null and auditTask.userName!=''">
+	and IM_D_RECEIVE_TASK.USER_NAME like CONCAT('%',#{auditTask.userName},'%')
+	</if>
+	<if test="createTime1 != null and  createTime1!=''">
+      and UNIX_TIMESTAMP(IM_D_RECEIVE_TASK.CREATE_TIME) &gt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime1},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    <if test="createTime2 != null and  createTime2!=''">
+      and UNIX_TIMESTAMP(IM_D_RECEIVE_TASK.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime2},'%Y-%m-%d %H-%i-%s'))
+    </if>
+
+</select>
+
+
+ 
+  
+  <select id="getHisAuditList" parameterType="java.util.Map" resultMap="ResultMapWithBLOBs">
+ 
+    select 
+   <include refid="Base_Column_List" />
+    ,
+    IM_D_SUBMISSIONS.STATUS
+    
+    from IM_D_RECEIVE_TASK,IM_D_SUBMISSIONS
+    where 
+    IM_D_SUBMISSIONS.STATUS IN ('AGREE','REJECT')
+    and IM_D_RECEIVE_TASK.ID = IM_D_SUBMISSIONS.RECEIVE_TASK_ID
+   <if test="auditTask.name!=null and auditTask.name!=''">
+	and IM_D_RECEIVE_TASK.NAME like CONCAT('%',#{auditTask.name},'%')
+	</if>
+	<if test="auditTask.userName!=null and auditTask.userName!=''">
+	and IM_D_RECEIVE_TASK.USER_NAME like CONCAT('%',#{auditTask.userName},'%')
+	</if>
+	<if test="createTime1 != null and  createTime1!=''">
+      and UNIX_TIMESTAMP(IM_D_RECEIVE_TASK.CREATE_TIME) &gt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime1},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    <if test="createTime2 != null and  createTime2!=''">
+      and UNIX_TIMESTAMP(IM_D_RECEIVE_TASK.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime2},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    limit
+    #{page.dbIndex},#{page.dbNumber}
+  </select>
+  
+</mapper>

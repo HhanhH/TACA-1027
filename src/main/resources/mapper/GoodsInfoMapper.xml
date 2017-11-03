@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taca.mapper.GoodsInfoMapper">
+  <resultMap id="BaseResultMap" type="com.taca.model.GoodsInfo">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="CATEGORY" jdbcType="VARCHAR" property="category" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="STAR_NUMBER" jdbcType="BIGINT" property="starNumber" />
+    <result column="STAR_LEVEL" jdbcType="BIGINT" property="starLevel" />
+    <result column="ICON_ADDRESS" jdbcType="VARCHAR" property="iconAddress" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="COUNT" jdbcType="BIGINT" property="count" />
+    <result column="AVAILABLE_STOCK" jdbcType="BIGINT" property="availableStock" />
+    <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+  </resultMap>
+
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="GoodsInfo">
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    ID, TYPE, CATEGORY, NAME, STAR_NUMBER, STAR_LEVEL, ICON_ADDRESS, STATUS, COUNT, AVAILABLE_STOCK, 
+    CREATE_TIME, UPDATE_TIME
+  </sql>
+
+  <sql id="Blob_Column_List">
+    DESCRIPTION
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from IM_B_GOODS_INFO
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="getGoodsList" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from IM_B_GOODS_INFO where STATUS='ON' order by CREATE_TIME
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from IM_B_GOODS_INFO
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="GoodsInfo">
+    insert into IM_B_GOODS_INFO (ID, TYPE, CATEGORY, 
+      NAME, STAR_NUMBER, STAR_LEVEL, 
+      ICON_ADDRESS, STATUS, COUNT, 
+      AVAILABLE_STOCK, CREATE_TIME, UPDATE_TIME, 
+      DESCRIPTION)
+    values (#{id,jdbcType=BIGINT}, #{type,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{starNumber,jdbcType=BIGINT}, #{starLevel,jdbcType=BIGINT}, 
+      #{iconAddress,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{count,jdbcType=BIGINT}, 
+      #{availableStock,jdbcType=BIGINT}, #{createTime,jdbcType=DATE}, #{updateTime,jdbcType=DATE},
+      #{description,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="insertSelective" parameterType="GoodsInfo">
+    insert into IM_B_GOODS_INFO
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="type != null">
+        TYPE,
+      </if>
+      <if test="category != null">
+        CATEGORY,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="starNumber != null">
+        STAR_NUMBER,
+      </if>
+      <if test="starLevel != null">
+        STAR_LEVEL,
+      </if>
+      <if test="iconAddress != null and iconAddress !=''">
+        ICON_ADDRESS,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="count != null">
+        COUNT,
+      </if>
+      <if test="availableStock != null">
+        AVAILABLE_STOCK,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="description != null">
+        DESCRIPTION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+        #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="starNumber != null">
+        #{starNumber,jdbcType=BIGINT},
+      </if>
+      <if test="starLevel != null">
+        #{starLevel,jdbcType=BIGINT},
+      </if>
+      <if test="iconAddress != null and iconAddress!=''">
+        #{iconAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=BIGINT},
+      </if>
+      <if test="availableStock != null">
+        #{availableStock,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="GoodsInfo">
+    update IM_B_GOODS_INFO
+    <set>
+      <if test="type != null">
+        TYPE = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+        CATEGORY = #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="starNumber != null">
+        STAR_NUMBER = #{starNumber,jdbcType=BIGINT},
+      </if>
+      <if test="starLevel != null">
+        STAR_LEVEL = #{starLevel,jdbcType=BIGINT},
+      </if>
+      <if test="iconAddress != null and iconAddress!=''">
+        ICON_ADDRESS = #{iconAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null">
+        COUNT = #{count,jdbcType=BIGINT},
+      </if>
+      <if test="availableStock != null">
+        AVAILABLE_STOCK = #{availableStock,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="description != null and description !=''">
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="GoodsInfo">
+    update IM_B_GOODS_INFO
+    set TYPE = #{type,jdbcType=VARCHAR},
+      CATEGORY = #{category,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      STAR_NUMBER = #{starNumber,jdbcType=BIGINT},
+      STAR_LEVEL = #{starLevel,jdbcType=BIGINT},
+      ICON_ADDRESS = #{iconAddress,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      COUNT = #{count,jdbcType=BIGINT},
+      AVAILABLE_STOCK = #{availableStock,jdbcType=BIGINT},
+      CREATE_TIME = #{createTime,jdbcType=DATE},
+      UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      DESCRIPTION = #{description,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="GoodsInfo">
+    update IM_B_GOODS_INFO
+    set TYPE = #{type,jdbcType=VARCHAR},
+      CATEGORY = #{category,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      STAR_NUMBER = #{starNumber,jdbcType=BIGINT},
+      STAR_LEVEL = #{starLevel,jdbcType=BIGINT},
+      ICON_ADDRESS = #{iconAddress,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      COUNT = #{count,jdbcType=BIGINT},
+      AVAILABLE_STOCK = #{availableStock,jdbcType=BIGINT},
+      CREATE_TIME = #{createTime,jdbcType=DATE},
+      UPDATE_TIME = #{updateTime,jdbcType=DATE}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="count" parameterType="com.taca.model.GoodsInfo" resultType="java.lang.Integer">
+    select count(ID)
+    from IM_B_GOODS_INFO
+    where 1=1
+    <if test="name != null">
+      and NAME like CONCAT('%',#{name},'%')
+    </if>
+
+  </select>
+
+
+  <select id="getListByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+
+    from IM_B_GOODS_INFO
+    where 1=1
+    <if test="goodsInfo.name != null and goodsInfo.name!=''">
+      and NAME like CONCAT('%',#{goodsInfo.name},'%')
+    </if>
+    <if test="goodsInfo.type != null and goodsInfo.type!='' and goodsInfo.type!='all'">
+      and TYPE = #{goodsInfo.type}
+    </if>
+    <if test="goodsInfo.category != null and goodsInfo.category !='' and goodsInfo.category !='all'">
+      and CATEGORY = #{goodsInfo.category}
+    </if>
+    <if test="goodsInfo.status != null and goodsInfo.status !='' and goodsInfo.status !='all'">
+      and STATUS = #{goodsInfo.status}
+    </if>
+
+    <if test="starNumber1 != null and  starNumber1!=''">
+      and UNIX_TIMESTAMP(IM_B_GOODS_INFO.STAR_NUMBER) &gt;= UNIX_TIMESTAMP(STR_TO_DATE(#{starNumber1},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    <if test="starNumber2 != null and  starNumber2!=''">
+      and UNIX_TIMESTAMP(IM_B_GOODS_INFO.STAR_NUMBER) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{starNumber2},'%Y-%m-%d %H-%i-%s'))
+    </if>
+
+    <if test="createTime1 != null and  createTime1!=''">
+      and UNIX_TIMESTAMP(IM_B_GOODS_INFO.CREATE_TIME) &gt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime1},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    <if test="createTime2 != null and  createTime2!=''">
+      and UNIX_TIMESTAMP(IM_B_GOODS_INFO.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime2},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    order by STATUS DESC
+    limit
+    #{page.dbIndex},#{page.dbNumber}
+  </select>
+  <select id="countByMap" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(ID)
+    from IM_B_GOODS_INFO
+    where 1=1
+    <if test="goodsInfo.name != null and goodsInfo.name!=''">
+      and NAME like CONCAT('%',#{goodsInfo.name},'%')
+    </if>
+    <if test="goodsInfo.type != null and goodsInfo.type!='' and goodsInfo.type!='all'">
+      and TYPE = #{goodsInfo.type}
+    </if>
+    <if test="goodsInfo.category != null and goodsInfo.category !='' and goodsInfo.category !='all'">
+      and CATEGORY = #{goodsInfo.category}
+    </if>
+    <if test="goodsInfo.status != null and goodsInfo.status !='' and goodsInfo.status !='all'">
+      and STATUS = #{goodsInfo.status}
+    </if>
+
+    <if test="starNumber1 != null and  starNumber1!=''">
+      and UNIX_TIMESTAMP(IM_B_GOODS_INFO.STAR_NUMBER) &gt;= UNIX_TIMESTAMP(STR_TO_DATE(#{starNumber1},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    <if test="starNumber2 != null and  starNumber2!=''">
+      and UNIX_TIMESTAMP(IM_B_GOODS_INFO.STAR_NUMBER) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{starNumber2},'%Y-%m-%d %H-%i-%s'))
+    </if>
+
+
+    <if test="createTime1 != null and  createTime1!=''">
+      and UNIX_TIMESTAMP(IM_B_GOODS_INFO.CREATE_TIME) &gt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime1},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    <if test="createTime2 != null and  createTime2!=''">
+      and UNIX_TIMESTAMP(IM_B_GOODS_INFO.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime2},'%Y-%m-%d %H-%i-%s'))
+    </if>
+
+  </select>
+
+  <select id="getCategoryList" resultType="java.lang.String">
+    select DISTINCT CATEGORY as category
+    from IM_B_GOODS_INFO
+    where IM_B_GOODS_INFO.CATEGORY is not null
+  </select>
+
+  <update id="changOffAndOnById" parameterType="java.util.Map">
+    update IM_B_GOODS_INFO
+    <set> STATUS = #{status,jdbcType=VARCHAR},
+      UPDATE_TIME =#{updateTime,jdbcType=DATE}
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

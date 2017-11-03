@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taca.mapper.ShoppingMapper">
+
+  <resultMap id="BaseResultMap" type="com.taca.model.Shopping">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="USERNAME" jdbcType="VARCHAR" property="username" />
+    <result column="GOODS_ID" jdbcType="BIGINT" property="goodsId" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="STAR_NUMBER" jdbcType="BIGINT" property="starNumber" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="MESSAGE" jdbcType="VARCHAR" property="message"/>
+    <result column="TRANS_ID" jdbcType="BIGINT" property="transId" />
+    <result column="START_TIME" jdbcType="DATE" property="startTime" />
+    <result column="FINISH_TIME" jdbcType="DATE" property="finishTime" />
+    <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+  </resultMap>
+
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="Shopping">
+
+    <result column="CONTENT" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    ID, USERNAME, GOODS_ID, NAME, STAR_NUMBER, STATUS, MESSAGE,TRANS_ID, START_TIME, FINISH_TIME,
+    CREATE_TIME, UPDATE_TIME
+  </sql>
+
+  <sql id="Blob_Column_List">
+    CONTENT
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from IM_D_SHOPPING
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from IM_D_SHOPPING
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="Shopping">
+    insert into IM_D_SHOPPING (ID, USERNAME, GOODS_ID, 
+      NAME, STAR_NUMBER, STATUS,MESSAGE,
+      TRANS_ID, START_TIME, FINISH_TIME, 
+      CREATE_TIME, UPDATE_TIME, CONTENT
+      )
+    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{goodsId,jdbcType=BIGINT}, 
+      #{name,jdbcType=VARCHAR}, #{starNumber,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, 
+     #{message,jdbcType=VARCHAR}, #{transId,jdbcType=BIGINT}, #{startTime,jdbcType=DATE}, #{finishTime,jdbcType=DATE},
+      #{createTime,jdbcType=DATE}, #{updateTime,jdbcType=DATE}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+
+  <insert id="insertSelective" parameterType="Shopping">
+    insert into IM_D_SHOPPING
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="username != null">
+        USERNAME,
+      </if>
+      <if test="goodsId != null">
+        GOODS_ID,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="starNumber != null">
+        STAR_NUMBER,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="message!=null">
+        MESSAGE,
+      </if>
+      <if test="transId != null">
+        TRANS_ID,
+      </if>
+      <if test="startTime != null">
+        START_TIME,
+      </if>
+      <if test="finishTime != null">
+        FINISH_TIME,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="content != null">
+        CONTENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="starNumber != null">
+        #{starNumber,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="message!=null">
+        #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="transId != null">
+        #{transId,jdbcType=BIGINT},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=DATE},
+      </if>
+      <if test="finishTime != null">
+        #{finishTime,jdbcType=DATE},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="Shopping">
+    update IM_D_SHOPPING
+    <set>
+      <if test="username != null">
+        USERNAME = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null">
+        GOODS_ID = #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="starNumber != null">
+        STAR_NUMBER = #{starNumber,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="message!=null">
+        MESSAGE=#{message,jdbcType=VARCHAR},
+      </if>
+      <if test="transId != null">
+        TRANS_ID = #{transId,jdbcType=BIGINT},
+      </if>
+      <if test="startTime != null">
+        START_TIME = #{startTime,jdbcType=DATE},
+      </if>
+      <if test="finishTime != null">
+        FINISH_TIME = #{finishTime,jdbcType=DATE},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="content != null">
+        CONTENT = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="Shopping">
+    update IM_D_SHOPPING
+    set USERNAME = #{username,jdbcType=VARCHAR},
+      GOODS_ID = #{goodsId,jdbcType=BIGINT},
+      NAME = #{name,jdbcType=VARCHAR},
+      STAR_NUMBER = #{starNumber,jdbcType=BIGINT},
+      STATUS = #{status,jdbcType=VARCHAR},
+      MESSAGE=#{message,jdbcType=VARCHAR},
+      TRANS_ID = #{transId,jdbcType=BIGINT},
+      START_TIME = #{startTime,jdbcType=DATE},
+      FINISH_TIME = #{finishTime,jdbcType=DATE},
+      CREATE_TIME = #{createTime,jdbcType=DATE},
+      UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      CONTENT = #{content,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="Shopping">
+    update IM_D_SHOPPING
+    set USERNAME = #{username,jdbcType=VARCHAR},
+      GOODS_ID = #{goodsId,jdbcType=BIGINT},
+      NAME = #{name,jdbcType=VARCHAR},
+      STAR_NUMBER = #{starNumber,jdbcType=BIGINT},
+      STATUS = #{status,jdbcType=VARCHAR},
+      MESSAGE=#{message,jdbcType=VARCHAR},
+      TRANS_ID = #{transId,jdbcType=BIGINT},
+      START_TIME = #{startTime,jdbcType=DATE},
+      FINISH_TIME = #{finishTime,jdbcType=DATE},
+      CREATE_TIME = #{createTime,jdbcType=DATE},
+      UPDATE_TIME = #{updateTime,jdbcType=DATE}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectShopByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from IM_D_SHOPPING
+    where USERNAME = #{userName}
+    ORDER BY STATUS DESC
+  </select>
+  
+  <select id="count" parameterType="com.taca.model.Shopping" resultType="java.lang.Integer">
+    select count(ID)
+    from IM_D_SHOPPING
+    where 1=1
+    <if test="status != null">
+      and  STATUS = #{status,jdbcType=VARCHAR}
+    </if>
+    <if test="username != null">
+      and  USERNAME like CONCAT('%',#{username},'%')
+    </if>
+
+
+  </select>
+
+  <select id="countForAudit" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(ID)
+    from IM_D_SHOPPING
+    where 1=1
+
+    and  STATUS ='PROCEEDING'
+
+    <if test="shopping.username != null">
+      and  USERNAME like CONCAT('%',#{shopping.username},'%')
+    </if>
+    <if test="shopping.name!=null and shopping.name!=''">
+      and NAME like CONCAT('%',#{shopping.name},'%')
+    </if>
+
+    <if test="createTime1 != null and  createTime1!=''">
+      and UNIX_TIMESTAMP(IM_D_SHOPPING.CREATE_TIME) &gt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime1},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    <if test="createTime2 != null and  createTime2!=''">
+      and UNIX_TIMESTAMP(IM_D_SHOPPING.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime2},'%Y-%m-%d %H-%i-%s'))
+    </if>
+
+
+  </select>
+
+  <select id="getListByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+
+    from IM_D_SHOPPING
+    where STATUS = #{shopping.status,jdbcType=VARCHAR}
+    <if test="shopping.username != null">
+      and  USERNAME like CONCAT('%',#{shopping.username},'%')
+    </if>
+    <if test="shopping.name!=null and shopping.name!=''">
+      and NAME like CONCAT('%',#{shopping.name},'%')
+    </if>
+
+    <if test="createTime1 != null and  createTime1!=''">
+      and UNIX_TIMESTAMP(IM_D_SHOPPING.CREATE_TIME) &gt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime1},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    <if test="createTime2 != null and  createTime2!=''">
+      and UNIX_TIMESTAMP(IM_D_SHOPPING.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime2},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    limit
+    #{page.dbIndex},#{page.dbNumber}
+  </select>
+
+  <select id="countHis" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(ID)
+    from IM_D_SHOPPING
+    where 1=1
+    <if test="shopping.username != null">
+      and  USERNAME like CONCAT('%',#{shopping.username},'%')
+    </if>
+    <if test="shopping.name!=null and shopping.name!=''">
+      and NAME like CONCAT('%',#{shopping.name},'%')
+    </if>
+
+    <if test="createTime1 != null and  createTime1!=''">
+      and UNIX_TIMESTAMP(IM_D_SHOPPING.CREATE_TIME) &gt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime1},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    <if test="createTime2 != null and  createTime2!=''">
+      and UNIX_TIMESTAMP(IM_D_SHOPPING.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime2},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    and STATUS != 'PROCEEDING'
+
+  </select>
+
+
+  <select id="getHisListByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+
+    from IM_D_SHOPPING
+    where
+    1=1
+    <if test="shopping.username != null">
+      and  USERNAME like CONCAT('%',#{shopping.username},'%')
+    </if>
+    <if test="shopping.name!=null and shopping.name!=''">
+      and NAME like CONCAT('%',#{shopping.name},'%')
+    </if>
+
+    <if test="createTime1 != null and  createTime1!=''">
+      and UNIX_TIMESTAMP(IM_D_SHOPPING.CREATE_TIME) &gt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime1},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    <if test="createTime2 != null and  createTime2!=''">
+      and UNIX_TIMESTAMP(IM_D_SHOPPING.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime2},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    and  STATUS  != 'PROCEEDING'
+
+    limit
+    #{page.dbIndex},#{page.dbNumber}
+  </select>
+
+
+  <select id="getTransId" parameterType="java.lang.Long" resultType="java.lang.Long">
+    select TRANS_ID
+    from	IM_D_SHOPPING
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <update id="updateForAudit" parameterType="Shopping">
+
+    update IM_D_SHOPPING
+    set
+    MESSAGE = #{message,jdbcType=LONGVARCHAR},
+    STATUS = #{status,jdbcType=VARCHAR},
+    FINISH_TIME = #{finishTime,jdbcType=DATE},
+    UPDATE_TIME = #{updateTime,jdbcType=DATE}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="getUMById" parameterType="java.lang.Long" resultType="java.lang.String">
+    select USERNAME from  IM_D_SHOPPING where ID = #{id,jdbcType=BIGINT}
+  </select>
+</mapper>

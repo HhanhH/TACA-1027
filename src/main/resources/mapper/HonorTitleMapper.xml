@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taca.mapper.HonorTitleMapper">
+
+  <resultMap id="BaseResultMap" type="com.taca.model.HonorTitle">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="TITLE" jdbcType="VARCHAR" property="title" />
+    <result column="STAR_NUMBER" jdbcType="BIGINT" property="starNumber" />
+    <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    ID, TITLE, STAR_NUMBER, CREATE_TIME, UPDATE_TIME
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from IM_B_HONOR_TITLE
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from IM_B_HONOR_TITLE
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="HonorTitle">
+    insert into IM_B_HONOR_TITLE (ID, TITLE, STAR_NUMBER, 
+      CREATE_TIME, UPDATE_TIME)
+    values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{starNumber,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=DATE}, #{updateTime,jdbcType=DATE})
+  </insert>
+  <select id="getList" resultType="HonorTitle">
+    select
+    ID, TITLE, STAR_NUMBER as starNumber, CREATE_TIME as createTime, UPDATE_TIME as updateTime
+    from IM_B_HONOR_TITLE
+    order by STAR_NUMBER ASC
+  </select>
+  <select id="getMinTitle" resultType="HonorTitle">
+    select
+      <include refid="Base_Column_List" />
+    from IM_B_HONOR_TITLE where STAR_NUMBER=(select MIN(STAR_NUMBER) from IM_B_HONOR_TITLE)
+  </select>
+  <insert id="insertSelective" parameterType="HonorTitle">
+    insert into IM_B_HONOR_TITLE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="title != null">
+        TITLE,
+      </if>
+      <if test="starNumber != null">
+        STAR_NUMBER,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="starNumber != null">
+        #{starNumber,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="HonorTitle">
+    update IM_B_HONOR_TITLE
+    <set>
+      <if test="title != null">
+        TITLE = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="starNumber != null">
+        STAR_NUMBER = #{starNumber,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="HonorTitle">
+
+    update IM_B_HONOR_TITLE
+    set TITLE = #{title,jdbcType=VARCHAR},
+      STAR_NUMBER = #{starNumber,jdbcType=BIGINT},
+
+      UPDATE_TIME = #{updateTime,jdbcType=DATE}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="queryHonorRanking" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from IM_B_HONOR_TITLE
+  </select>
+  <!--查询上个月的-->
+  <select id="queryHonorMonth" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM  IM_B_HONOR_TITLE WHERE TO_DAYS( NOW( ) ) - TO_DAYS( CREATE_TIME) = 30 ORDER BY STAR_NUMBER  DESC
+  </select>
+  <select id="queryHonorMonths" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from  IM_B_HONOR_TITLE where QUARTER(CREATE_TIME)=QUARTER(NOW()) ORDER BY STAR_NUMBER  DESC
+  </select>
+
+  <select id="count" resultType="java.lang.Integer">
+    select count(ID)
+    from
+    IM_B_HONOR_TITLE
+
+  </select>
+
+  <select id="queryListByPage" parameterType="com.taca.common.util.Page" resultType="HonorTitle">
+    select
+    ID, TITLE, STAR_NUMBER as starNumber, CREATE_TIME as createTime, UPDATE_TIME as updateTime
+    from IM_B_HONOR_TITLE
+    order by STAR_NUMBER ASC
+    limit
+    #{dbIndex},#{dbNumber}
+  </select>
+
+  <select id="getByTitle" parameterType="java.lang.String" resultType="HonorTitle">
+    select
+    ID, TITLE, STAR_NUMBER as starNumber, CREATE_TIME as createTime, UPDATE_TIME as updateTime
+    from IM_B_HONOR_TITLE
+    where TITLE = #{title,jdbcType=VARCHAR}
+  </select>
+</mapper>

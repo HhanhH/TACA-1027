@@ -114,7 +114,7 @@
   </select>
 
   <select id="getStarLevelList" resultType="java.lang.Long">
-    select distinct STAR_LEVEL  from IM_B_TASK_INFO where  STAR_LEVEL is not null and STATUS = 'ACTIVE'
+    select distinct STAR_LEVEL  from IM_B_TASK_INFO where  STAR_LEVEL is not null and STATUS = 'ON'
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -413,7 +413,7 @@
   <select id="getCategoryList" resultType="java.lang.String">
     select DISTINCT CATEGORY as category
     from IM_B_TASK_INFO
-    where IM_B_TASK_INFO.CATEGORY is not null and IM_B_TASK_INFO.STATUS = 'ACTIVE'
+    where IM_B_TASK_INFO.CATEGORY is not null and IM_B_TASK_INFO.STATUS = 'ON'
   </select>
 
   <select id="queryList" parameterType="com.taca.model.TaskInfo" resultMap="BaseResultMap">

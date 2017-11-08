@@ -43,7 +43,7 @@ public class LoginAdminController {
     public String login(Admin admin,Model model,HttpServletRequest httpServletRequest,HttpSession session) {
     	if(AdminConstants.ADMIN_NAME.equals(admin.getAdminName())&&AdminConstants.PASSWORD.equals(admin.getPassword())){
         	session.setAttribute("admin", admin);
-        	session.setMaxInactiveInterval(5 * 60);//设置单位为秒，设置为-1永不过期
+        	session.setMaxInactiveInterval(10 * 60);//设置单位为秒，设置为-1永不过期
         	return "redirect:index";
         }
         else{

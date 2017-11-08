@@ -39,6 +39,7 @@
 
 	</form>
 	</div>
+	 <#include "/mobile/includes/footer.ftl" />
 </div>
 
 <div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">

@@ -6,8 +6,8 @@
     <id column="ID" jdbcType="BIGINT" property="id" />
     <result column="TITLE" jdbcType="VARCHAR" property="title" />
     <result column="STAR_NUMBER" jdbcType="BIGINT" property="starNumber" />
-    <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
-    <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -30,7 +30,7 @@
     insert into IM_B_HONOR_TITLE (ID, TITLE, STAR_NUMBER, 
       CREATE_TIME, UPDATE_TIME)
     values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{starNumber,jdbcType=BIGINT}, 
-      #{createTime,jdbcType=DATE}, #{updateTime,jdbcType=DATE})
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <select id="getList" resultType="HonorTitle">
     select
@@ -73,10 +73,10 @@
         #{starNumber,jdbcType=BIGINT},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=DATE},
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        #{updateTime,jdbcType=DATE},
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -91,10 +91,10 @@
         STAR_NUMBER = #{starNumber,jdbcType=BIGINT},
       </if>
       <if test="createTime != null">
-        CREATE_TIME = #{createTime,jdbcType=DATE},
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where ID = #{id,jdbcType=BIGINT}
@@ -106,7 +106,7 @@
     set TITLE = #{title,jdbcType=VARCHAR},
       STAR_NUMBER = #{starNumber,jdbcType=BIGINT},
 
-      UPDATE_TIME = #{updateTime,jdbcType=DATE}
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=BIGINT}
   </update>
 

@@ -109,11 +109,7 @@ public class LoginAction {
         if (!MD5Util.MD5(password).equals(userInfo.getPassword())) {
         	throw new BusinessException(IMResp.PASSWORD_UNCORRECT);
         }
-        try {
-			CookieUtil.saveCookie(username,password,response);
-		} catch (Exception e) {
-			throw new BusinessException(IMResp.FAIL);
-		}
+       httpSession.setMaxInactiveInterval(60*30);
        httpSession.setAttribute("username",username);
        return new ResultBean(IMResp.SUCCESS);
     }

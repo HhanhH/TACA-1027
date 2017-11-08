@@ -33,7 +33,7 @@
 <!--menu end  -->
 
     </style>
-		<div class="tpl-content-wrapper" style="height:499px;">
+		<div class="tpl-content-wrapper" >
 
 			<div class="tpl-portlet-components">
 				<div class="portlet-title">
@@ -87,9 +87,13 @@
 
 				</div>
 
-				<form class="am-form am-g">
-					<table width="100%"
-						class="am-table am-table-striped am-table-hover table-main">
+				<div class="am-g">
+				<div class="am-u-sm-12">
+
+
+					<div>
+					<table class="am-table am-table-striped am-table-hover table-main"
+							style="border: 1px solid #abc">
 						<thead>
 						
 							<tr class="am-success">
@@ -157,16 +161,21 @@
 
 					<hr />
 
-				</form>
+				
 
+	</div>
+			</div>
+	</div>
 
+				</div>
 
 			</div>
-
-		</div>
+		
 
 <#include "admin/page.ftl">
 
 	<#include "admin/foot.ftl">
+
+
 </body>
 </html>

@@ -11,11 +11,11 @@
     <result column="PRE_STAR_NUMBER" jdbcType="BIGINT" property="preStarNumber" />
     <result column="STATUS" jdbcType="VARCHAR" property="status" />
     <result column="TRANS_ID" jdbcType="BIGINT" property="transId" />
-    <result column="START_TIME" jdbcType="DATE" property="startTime" />
-    <result column="EXPECTED_TIME" jdbcType="DATE" property="expectedTime" />
-    <result column="FINISHED_TIME" jdbcType="DATE" property="finishedTime" />
-    <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
-    <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+    <result column="START_TIME" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="EXPECTED_TIME" jdbcType="TIMESTAMP" property="expectedTime" />
+    <result column="FINISHED_TIME" jdbcType="TIMESTAMP" property="finishedTime" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
 
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="ReceiveTask">
@@ -65,8 +65,8 @@
       CONTENT)
     values (#{id,jdbcType=BIGINT}, #{taskId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},
       #{actStarNumber,jdbcType=BIGINT}, #{preStarNumber,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, 
-      #{transId,jdbcType=BIGINT}, #{startTime,jdbcType=DATE}, #{expectedTime,jdbcType=DATE},
-      #{finishedTime,jdbcType=DATE}, #{createTime,jdbcType=DATE}, #{updateTime,jdbcType=DATE},
+      #{transId,jdbcType=BIGINT}, #{startTime,jdbcType=TIMESTAMP}, #{expectedTime,jdbcType=TIMESTAMP},
+      #{finishedTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
       #{content,jdbcType=LONGVARCHAR})
   </insert>
 
@@ -142,19 +142,19 @@
         #{transId,jdbcType=BIGINT},
       </if>
       <if test="startTime != null">
-        #{startTime,jdbcType=DATE},
+        #{startTime,jdbcType=TIMESTAMP},
       </if>
       <if test="expectedTime != null">
-        #{expectedTime,jdbcType=DATE},
+        #{expectedTime,jdbcType=TIMESTAMP},
       </if>
       <if test="finishedTime != null">
-        #{finishedTime,jdbcType=DATE},
+        #{finishedTime,jdbcType=TIMESTAMP},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=DATE},
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        #{updateTime,jdbcType=DATE},
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="content != null">
         #{content,jdbcType=LONGVARCHAR},
@@ -187,19 +187,19 @@
         TRANS_ID = #{transId,jdbcType=BIGINT},
       </if>
       <if test="startTime != null">
-        START_TIME = #{startTime,jdbcType=DATE},
+        START_TIME = #{startTime,jdbcType=TIMESTAMP},
       </if>
       <if test="expectedTime != null">
-        EXPECTED_TIME = #{expectedTime,jdbcType=DATE},
+        EXPECTED_TIME = #{expectedTime,jdbcType=TIMESTAMP},
       </if>
       <if test="finishedTime != null">
-        FINISHED_TIME = #{finishedTime,jdbcType=DATE},
+        FINISHED_TIME = #{finishedTime,jdbcType=TIMESTAMP},
       </if>
       <if test="createTime != null">
-        CREATE_TIME = #{createTime,jdbcType=DATE},
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="content != null">
         CONTENT = #{content,jdbcType=LONGVARCHAR},
@@ -217,11 +217,11 @@
       PRE_STAR_NUMBER = #{preStarNumber,jdbcType=BIGINT},
       STATUS = #{status,jdbcType=VARCHAR},
       TRANS_ID = #{transId,jdbcType=BIGINT},
-      START_TIME = #{startTime,jdbcType=DATE},
-      EXPECTED_TIME = #{expectedTime,jdbcType=DATE},
-      FINISHED_TIME = #{finishedTime,jdbcType=DATE},
-      CREATE_TIME = #{createTime,jdbcType=DATE},
-      UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      EXPECTED_TIME = #{expectedTime,jdbcType=TIMESTAMP},
+      FINISHED_TIME = #{finishedTime,jdbcType=TIMESTAMP},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
       CONTENT = #{content,jdbcType=LONGVARCHAR}
     where ID = #{id,jdbcType=BIGINT}
   </update>
@@ -235,11 +235,11 @@
       PRE_STAR_NUMBER = #{preStarNumber,jdbcType=BIGINT},
       STATUS = #{status,jdbcType=VARCHAR},
       TRANS_ID = #{transId,jdbcType=BIGINT},
-      START_TIME = #{startTime,jdbcType=DATE},
-      EXPECTED_TIME = #{expectedTime,jdbcType=DATE},
-      FINISHED_TIME = #{finishedTime,jdbcType=DATE},
-      CREATE_TIME = #{createTime,jdbcType=DATE},
-      UPDATE_TIME = #{updateTime,jdbcType=DATE}
+      START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      EXPECTED_TIME = #{expectedTime,jdbcType=TIMESTAMP},
+      FINISHED_TIME = #{finishedTime,jdbcType=TIMESTAMP},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=BIGINT}
   </update>
 
@@ -259,7 +259,7 @@
 
   <update id="updateTaskStatus" parameterType="ReceiveTask">
     update IM_D_RECEIVE_TASK
-    SET   STATUS = #{status,jdbcType=VARCHAR}, UPDATE_TIME = #{updateTime,jdbcType=DATE},
+    SET   STATUS = #{status,jdbcType=VARCHAR}, UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
     TRANS_ID=#{transId} WHERE  ID=${id}
   </update>
 
@@ -384,11 +384,11 @@
       
      
       <if test="finishedTime != null">
-        FINISHED_TIME = #{finishedTime,jdbcType=DATE},
+        FINISHED_TIME = #{finishedTime,jdbcType=TIMESTAMP},
       </if>
       
       <if test="updateTime != null">
-        UPDATE_TIME = #{updateTime,jdbcType=DATE}
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
       </if>
     where ID = #{id,jdbcType=BIGINT}
   </update>
@@ -409,10 +409,10 @@
 
     SELECT NAME as name,SUM(ACT_STAR_NUMBER) as actStarNumber
     FROM
-    im_d_receive_task t1,im_d_submissions t2
+    IM_D_RECEIVE_TASK t1,IM_D_SUBMISSIONS t2
     WHERE
     t1.ID = t2.RECEIVE_TASK_ID and t2.STATUS = 'AGREE'
-    AND t1.UPDATE_TIME BETWEEN '${monthBegin}' AND '${monthEnd}'
+    AND DATE(DATE_FORMAT(t1.UPDATE_TIMEDATE,'%y-%m-%d')) BETWEEN '${monthBegin}' AND '${monthEnd}'
     GROUP BY t1.NAME
 
     ORDER BY actStarNumber DESC
@@ -453,6 +453,7 @@
       from IM_D_RECEIVE_TASK 
       where 
       DATE(DATE_FORMAT(EXPECTED_TIME,'%y-%m-%d')) <![CDATA[<]]> DATE( DATE_FORMAT(NOW(),'%y-%m-%d')) 
+      and STATUS !='PENDING'
       and STATUS !='EXPIRED' and STATUS!='FINISHED'
   </select>
   

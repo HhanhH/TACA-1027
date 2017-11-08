@@ -6,8 +6,8 @@
     <id column="ID" jdbcType="BIGINT" property="id" />
     <result column="TASK_FIRST_ID" jdbcType="BIGINT" property="taskFirstId" />
     <result column="TASK_SECOND_ID" jdbcType="BIGINT" property="taskSecondId" />
-    <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
-    <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -38,7 +38,7 @@
     insert into IM_B_TASK_MUTEX (ID, TASK_FIRST_ID, TASK_SECOND_ID, 
       CREATE_TIME, UPDATE_TIME)
     values (#{id,jdbcType=BIGINT}, #{taskFirstId,jdbcType=BIGINT}, #{taskSecondId,jdbcType=BIGINT}, 
-      #{createTime,jdbcType=DATE}, #{updateTime,jdbcType=DATE})
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
 
   <insert id="insertSelective" parameterType="TaskMutex">
@@ -71,10 +71,10 @@
         #{taskSecondId,jdbcType=BIGINT},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=DATE},
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        #{updateTime,jdbcType=DATE},
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -89,10 +89,10 @@
         TASK_SECOND_ID = #{taskSecondId,jdbcType=BIGINT},
       </if>
       <if test="createTime != null">
-        CREATE_TIME = #{createTime,jdbcType=DATE},
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where ID = #{id,jdbcType=BIGINT}
@@ -102,8 +102,8 @@
     update IM_B_TASK_MUTEX
     set TASK_FIRST_ID = #{taskFirstId,jdbcType=BIGINT},
       TASK_SECOND_ID = #{taskSecondId,jdbcType=BIGINT},
-      CREATE_TIME = #{createTime,jdbcType=DATE},
-      UPDATE_TIME = #{updateTime,jdbcType=DATE}
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=BIGINT}
   </update>
   

@@ -15,6 +15,10 @@ function receiveTaskById(taskId,username,count) {
     }
     if(count<=0){
     	 $("#content").html("库存不足");
+    	 $('#my-alert').modal({
+		        relatedTarget: this,
+		     
+		    });
     	 return;
     }
     $.ajax({

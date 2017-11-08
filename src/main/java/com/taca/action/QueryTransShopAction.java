@@ -1,9 +1,13 @@
 package com.taca.action;
 
+import com.taca.common.constants.IMResp;
+import com.taca.common.exception.IMRunTimeException;
 import com.taca.model.Shopping;
 import com.taca.service.PrizeService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +26,8 @@ public class QueryTransShopAction {
    try{
      transRecordList = prizeService.selectShoppingByName(userName);
    }catch (Exception e){
-       e.printStackTrace();
+      throw new IMRunTimeException(IMResp.DBEXCEPTION);
    }
-   System.out.print(transRecordList);
         return  transRecordList;
     }
 }

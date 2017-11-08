@@ -228,7 +228,6 @@
 			</div>
 		</div>
 	</div>
-	</div>
 	<#include "admin/page.ftl"> <#include "admin/foot.ftl">
 
 </body>

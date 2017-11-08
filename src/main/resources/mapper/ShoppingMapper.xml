@@ -11,10 +11,10 @@
     <result column="STATUS" jdbcType="VARCHAR" property="status" />
     <result column="MESSAGE" jdbcType="VARCHAR" property="message"/>
     <result column="TRANS_ID" jdbcType="BIGINT" property="transId" />
-    <result column="START_TIME" jdbcType="DATE" property="startTime" />
-    <result column="FINISH_TIME" jdbcType="DATE" property="finishTime" />
-    <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
-    <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+    <result column="START_TIME" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="FINISH_TIME" jdbcType="TIMESTAMP" property="finishTime" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
 
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="Shopping">
@@ -53,8 +53,8 @@
       )
     values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{goodsId,jdbcType=BIGINT}, 
       #{name,jdbcType=VARCHAR}, #{starNumber,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, 
-     #{message,jdbcType=VARCHAR}, #{transId,jdbcType=BIGINT}, #{startTime,jdbcType=DATE}, #{finishTime,jdbcType=DATE},
-      #{createTime,jdbcType=DATE}, #{updateTime,jdbcType=DATE}, #{content,jdbcType=LONGVARCHAR}
+     #{message,jdbcType=VARCHAR}, #{transId,jdbcType=BIGINT}, #{startTime,jdbcType=TIMESTAMP}, #{finishTime,jdbcType=TIMESTAMP},
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR}
       )
   </insert>
 
@@ -127,16 +127,16 @@
         #{transId,jdbcType=BIGINT},
       </if>
       <if test="startTime != null">
-        #{startTime,jdbcType=DATE},
+        #{startTime,jdbcType=TIMESTAMP},
       </if>
       <if test="finishTime != null">
-        #{finishTime,jdbcType=DATE},
+        #{finishTime,jdbcType=TIMESTAMP},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=DATE},
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        #{updateTime,jdbcType=DATE},
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="content != null">
         #{content,jdbcType=LONGVARCHAR},
@@ -169,16 +169,16 @@
         TRANS_ID = #{transId,jdbcType=BIGINT},
       </if>
       <if test="startTime != null">
-        START_TIME = #{startTime,jdbcType=DATE},
+        START_TIME = #{startTime,jdbcType=TIMESTAMP},
       </if>
       <if test="finishTime != null">
-        FINISH_TIME = #{finishTime,jdbcType=DATE},
+        FINISH_TIME = #{finishTime,jdbcType=TIMESTAMP},
       </if>
       <if test="createTime != null">
-        CREATE_TIME = #{createTime,jdbcType=DATE},
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="content != null">
         CONTENT = #{content,jdbcType=LONGVARCHAR},
@@ -196,10 +196,10 @@
       STATUS = #{status,jdbcType=VARCHAR},
       MESSAGE=#{message,jdbcType=VARCHAR},
       TRANS_ID = #{transId,jdbcType=BIGINT},
-      START_TIME = #{startTime,jdbcType=DATE},
-      FINISH_TIME = #{finishTime,jdbcType=DATE},
-      CREATE_TIME = #{createTime,jdbcType=DATE},
-      UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      FINISH_TIME = #{finishTime,jdbcType=TIMESTAMP},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
       CONTENT = #{content,jdbcType=LONGVARCHAR}
     where ID = #{id,jdbcType=BIGINT}
   </update>
@@ -213,10 +213,10 @@
       STATUS = #{status,jdbcType=VARCHAR},
       MESSAGE=#{message,jdbcType=VARCHAR},
       TRANS_ID = #{transId,jdbcType=BIGINT},
-      START_TIME = #{startTime,jdbcType=DATE},
-      FINISH_TIME = #{finishTime,jdbcType=DATE},
-      CREATE_TIME = #{createTime,jdbcType=DATE},
-      UPDATE_TIME = #{updateTime,jdbcType=DATE}
+      START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      FINISH_TIME = #{finishTime,jdbcType=TIMESTAMP},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=BIGINT}
   </update>
 
@@ -227,7 +227,7 @@
     <include refid="Blob_Column_List" />
     from IM_D_SHOPPING
     where USERNAME = #{userName}
-    ORDER BY STATUS DESC
+    ORDER BY UPDATE_TIME DESC
   </select>
   
   <select id="count" parameterType="com.taca.model.Shopping" resultType="java.lang.Integer">
@@ -351,8 +351,8 @@
     set
     MESSAGE = #{message,jdbcType=LONGVARCHAR},
     STATUS = #{status,jdbcType=VARCHAR},
-    FINISH_TIME = #{finishTime,jdbcType=DATE},
-    UPDATE_TIME = #{updateTime,jdbcType=DATE}
+    FINISH_TIME = #{finishTime,jdbcType=TIMESTAMP},
+    UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=BIGINT}
   </update>
 

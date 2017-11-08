@@ -56,7 +56,7 @@
 
         </div>
 
-        <div class="pet_article_footer_info">Copyright(c)2017 卓越职场人</div>
+        <#include "/mobile/includes/footer.ftl" />
     </div>
 </div>
 <script src="../../../static/mobile/js/jquery.min.js"></script>

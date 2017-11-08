@@ -58,12 +58,17 @@ public class MyTaskPageController {
      * @return
      */
     @RequestMapping("/detail/{user}/{taskNum}")
-    public String selectTaskDetail(@PathVariable String user,@PathVariable String taskNum,Model model){
-        List<TaskList> myTaskList =  queryTaskListAction.selectUserTask(user);
-        TaskList taskList = myTaskList.get(Integer.parseInt(taskNum));
-        model.addAttribute("detail", taskList);
-        log.info("testDetail is actioning "+user);
-        return "mobile/MyTaskDetail";
+    public String selectTaskDetail(@PathVariable String user,@PathVariable String taskNum,Model model,HttpSession session){
+    	if(user.equalsIgnoreCase(session.getAttribute("username").toString())){
+    		List<TaskList> myTaskList =  queryTaskListAction.selectUserTask(user);
+    		TaskList taskList = myTaskList.get(Integer.parseInt(taskNum));
+    		model.addAttribute("detail", taskList);
+    		log.info("testDetail is actioning "+user);
+    		return "mobile/MyTaskDetail";
+    	}else{
+        	return "redirect:../../../login";
+        }
+    	
     }
 
     /**
@@ -72,8 +77,11 @@ public class MyTaskPageController {
      * @return
      */
     @RequestMapping(value = "/update/{userName}/{id}",method = RequestMethod.POST)
-    public String submitBack(@PathVariable Long id, @PathVariable String userName, @RequestParam(value = "text") String text, @RequestParam(value = "taskId") Long taskId, @RequestParam(value = "file", required = false) MultipartFile[] file){
-        int i = 0;
+    public String submitBack(@PathVariable Long id, @PathVariable String userName, @RequestParam(value = "text") String text, @RequestParam(value = "taskId") Long taskId, @RequestParam(value = "file", required = false) MultipartFile[] file,HttpSession session){
+       if(!userName.equals(session.getAttribute("username"))){
+    	   return "redirect:../../../login";
+       }
+    	int i = 0;
         try {
             i = queryTaskListAction.insertUserBack(text,file,taskId,userName,id);
         } catch (IOException e) {

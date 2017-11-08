@@ -77,6 +77,7 @@ public class ShoppingBusService {
             shopping.setContent(goodsInfo.getDescription());
             shopping.setStartTime(new Date());
             shopping.setCreateTime(new Date());
+            shopping.setUpdateTime(new Date());
             shoppingMapper.insert(shopping);
             log.info("新增兑换记录成功");
 

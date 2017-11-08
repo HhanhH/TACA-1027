@@ -7,8 +7,8 @@
     <result column="TITLE" jdbcType="VARCHAR" property="title" />
     <result column="ICON_ADDRESS" jdbcType="VARCHAR" property="iconAddress" />
     <result column="STATUS" jdbcType="VARCHAR" property="status" />
-    <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
-    <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
 
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="NoticeInfo">
@@ -53,7 +53,9 @@
     ,
     <include refid="Blob_Column_List" />
     from IM_B_NOTICE_INFO where STATUS='ACTIVE'
+    order by CREATE_TIME desc limit 2
   </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from IM_B_NOTICE_INFO
     where ID = #{id,jdbcType=BIGINT}
@@ -64,7 +66,7 @@
       STATUS, CREATE_TIME, UPDATE_TIME, 
       CONTENT)
     values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{iconAddress,jdbcType=VARCHAR}, 
-      #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}, #{updateTime,jdbcType=DATE},
+      #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
       #{content,jdbcType=LONGVARCHAR})
   </insert>
 
@@ -107,10 +109,10 @@
         #{status,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=DATE},
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        #{updateTime,jdbcType=DATE},
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="content != null">
         #{content,jdbcType=LONGVARCHAR},
@@ -131,10 +133,10 @@
         STATUS = #{status,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
-        CREATE_TIME = #{createTime,jdbcType=DATE},
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="content != null">
         CONTENT = #{content,jdbcType=LONGVARCHAR},
@@ -148,8 +150,8 @@
     set TITLE = #{title,jdbcType=VARCHAR},
       ICON_ADDRESS = #{iconAddress,jdbcType=VARCHAR},
       STATUS = #{status,jdbcType=VARCHAR},
-      CREATE_TIME = #{createTime,jdbcType=DATE},
-      UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
       CONTENT = #{content,jdbcType=LONGVARCHAR}
     where ID = #{id,jdbcType=BIGINT}
   </update>
@@ -159,8 +161,8 @@
     set TITLE = #{title,jdbcType=VARCHAR},
       ICON_ADDRESS = #{iconAddress,jdbcType=VARCHAR},
       STATUS = #{status,jdbcType=VARCHAR},
-      CREATE_TIME = #{createTime,jdbcType=DATE},
-      UPDATE_TIME = #{updateTime,jdbcType=DATE}
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=BIGINT}
   </update>
   <select id="count" parameterType="NoticeInfo" resultType="java.lang.Integer">

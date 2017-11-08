@@ -47,7 +47,7 @@
     <p>${detail.content}</p>
     <#if detail.status=='FINISHED'>
     <div class="pet_hd_con_gp_list_nr_tag">实际获得星点</div>
-    <p>${detail.starNumber}星点</p>
+    <p>${detail.actStarNumber}星点</p>
     <#elseif detail.status=='EXPIRED'>
     <div class="pet_hd_con_gp_list_nr_tag">已过期</div>
     <#else>
@@ -93,7 +93,7 @@
     </div>
   </div>
 </div>
-<div class="pet_article_footer_info">Copyright(c)2015 Amaze UI All Rights Reserved</div>
+ <#include "/mobile/includes/footer.ftl" />
 </div>
 </div>
 </div>

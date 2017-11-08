@@ -19,8 +19,8 @@
     <result column="HONOR_TITLE" jdbcType="VARCHAR" property="honorTitle" />
     <result column="UM" jdbcType="VARCHAR" property="um" />
     <result column="STATUS" jdbcType="VARCHAR" property="status"/>
-    <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
-    <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -39,7 +39,7 @@
     select
     <include refid="Base_Column_List" />
     from IM_D_USER_INFO
-    where USER_NAME=#{UM,jdbcType=VARCHAR} and STATUS='ACTIVE'
+    where USER_NAME=#{UM,jdbcType=VARCHAR}
   </select>
 
  <select id="getInactiveUserInfoByUM" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -83,8 +83,8 @@
       #{userNameCn,jdbcType=VARCHAR},#{iconAddress,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{wxOpenId,jdbcType=VARCHAR},
       #{availableStar,jdbcType=BIGINT}, #{emailAddress,jdbcType=VARCHAR}, #{freezeStar,jdbcType=BIGINT}, 
       #{historyStar,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT}, #{groupName,jdbcType=VARCHAR}, 
-      #{honorTitle,jdbcType=VARCHAR}, #{um,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE},
-      #{updateTime,jdbcType=DATE})
+      #{honorTitle,jdbcType=VARCHAR}, #{um,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
 
   <insert id="insertSelective" parameterType="UserInfo">
@@ -183,10 +183,10 @@
         #{um,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=DATE},
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        #{updateTime,jdbcType=DATE},
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null and status!=''" >
         #{status,jdbcType=VARCHAR}
@@ -243,10 +243,10 @@
         STATUS=#{status,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
-        CREATE_TIME = #{createTime,jdbcType=DATE},
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where ID = #{id,jdbcType=BIGINT}
@@ -298,10 +298,10 @@
         STATUS=#{status,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
-        CREATE_TIME = #{createTime,jdbcType=DATE},
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where USER_NAME = #{userName,jdbcType=VARCHAR}
@@ -324,8 +324,8 @@
       HONOR_TITLE = #{honorTitle,jdbcType=VARCHAR},
       UM = #{um,jdbcType=VARCHAR},
       STATUS=#{status,jdbcType=VARCHAR},
-      CREATE_TIME = #{createTime,jdbcType=DATE},
-      UPDATE_TIME = #{updateTime,jdbcType=DATE}
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=BIGINT}
   </update>
 
@@ -399,7 +399,7 @@
     <include refid="Base_Column_List" />
 
     from IM_D_USER_INFO
-    where STATUS = 'ACTIVE'
+    where 1=1
     <if test="userInfo.userName != null and  userInfo.userName!=''">
       and USER_NAME like CONCAT('%',#{userInfo.userName},'%')
     </if>
@@ -423,7 +423,7 @@
     <include refid="Base_Column_List" />
 
     from IM_D_USER_INFO
-    where 1=1
+    where STATUS = 'ACTIVE'
     <if test="userInfo.userName != null and userInfo.userName!=''">
       and USER_NAME like CONCAT('%',#{userInfo.userName},'%')
     </if>
@@ -495,7 +495,7 @@
     AVAILABLE_STAR = #{availableStar,jdbcType=BIGINT},
     HISTORY_STAR = #{historyStar,jdbcType=BIGINT},
     HONOR_TITLE = #{honorTitle,jdbcType=VARCHAR},
-    UPDATE_TIME = #{updateTime,jdbcType=DATE}
+    UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=BIGINT}
   </update>
 
@@ -507,19 +507,19 @@
       AVAILABLE_STAR = #{availableStar,jdbcType=BIGINT},
     </if>
     FREEZE_STAR = #{freezeStar,jdbcType=BIGINT},
-    UPDATE_TIME = #{updateTime,jdbcType=DATE}
+    UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=BIGINT}
   </update>
 
   <select id="getMonthList" parameterType="java.util.Map" resultType="com.taca.model.UserInfo">
     select
-    ID as id,im_d_user_info.USER_NAME as userName,HONOR_TITLE as honorTitle,
+    ID as id,IM_D_USER_INFO.USER_NAME as userName,HONOR_TITLE as honorTitle,
     USER_NAME_CN as userNameCn,UM as um,
     m.COUNT as historyStar
-    FROM im_d_user_info LEFT JOIN
+    FROM IM_D_USER_INFO LEFT JOIN
     (SELECT t1.USER_NAME,SUM(ACT_STAR_NUMBER) as COUNT
     FROM
-    im_d_receive_task t1,im_d_submissions t2
+    IM_D_RECEIVE_TASK t1,IM_D_SUBMISSIONS t2
     WHERE
     t1.ID = t2.RECEIVE_TASK_ID and t2.STATUS = 'AGREE'
     <if test="time1 != null and  time1!=''">
@@ -529,8 +529,8 @@
       and UNIX_TIMESTAMP(t1.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{time2},'%Y-%m-%d %H-%i-%s'))
     </if>
     GROUP BY t1.USER_NAME) m
-    ON im_d_user_info.USER_NAME =m. USER_NAME
-    WHERE im_d_user_info.STATUS ='ACTIVE'
+    ON IM_D_USER_INFO.USER_NAME =m. USER_NAME
+    WHERE IM_D_USER_INFO.STATUS ='ACTIVE'
     ORDER BY COUNT DESC
     limit
     #{page.dbIndex},#{page.dbNumber}

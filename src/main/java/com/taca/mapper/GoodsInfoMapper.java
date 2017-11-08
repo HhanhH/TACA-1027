@@ -35,4 +35,6 @@ public interface GoodsInfoMapper {
     Integer changOffAndOnById(Map<String, Object> map);
 
     List<String> getCategoryList();
+    
+    Integer updateCountById(GoodsInfo goodsInfo);
 }

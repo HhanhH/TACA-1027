@@ -60,4 +60,6 @@ public interface TaskInfoMapper {
     Integer countByMap(Map<String, Object> map);
 
     List<String> getCategoryList();
+    
+    Integer updateCountById(TaskInfo taskInfo);
 }

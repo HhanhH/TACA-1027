@@ -12,8 +12,8 @@
     <result column="STATUS" jdbcType="VARCHAR" property="status" />
     <result column="COUNT" jdbcType="BIGINT" property="count" />
     <result column="AVAILABLE_STOCK" jdbcType="BIGINT" property="availableStock" />
-    <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
-    <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
 
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="GoodsInfo">
@@ -61,7 +61,7 @@
     values (#{id,jdbcType=BIGINT}, #{type,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{starNumber,jdbcType=BIGINT}, #{starLevel,jdbcType=BIGINT}, 
       #{iconAddress,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{count,jdbcType=BIGINT}, 
-      #{availableStock,jdbcType=BIGINT}, #{createTime,jdbcType=DATE}, #{updateTime,jdbcType=DATE},
+      #{availableStock,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
       #{description,jdbcType=VARCHAR})
   </insert>
 
@@ -140,10 +140,10 @@
         #{availableStock,jdbcType=BIGINT},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=DATE},
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        #{updateTime,jdbcType=DATE},
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
@@ -182,10 +182,10 @@
         AVAILABLE_STOCK = #{availableStock,jdbcType=BIGINT},
       </if>
       <if test="createTime != null">
-        CREATE_TIME = #{createTime,jdbcType=DATE},
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="description != null and description !=''">
         DESCRIPTION = #{description,jdbcType=VARCHAR},
@@ -193,7 +193,15 @@
     </set>
     where ID = #{id,jdbcType=BIGINT}
   </update>
-
+ 
+  <update id="updateCountById"  parameterType="GoodsInfo">
+     update IM_B_GOODS_INFO
+     set COUNT = #{count,jdbcType=BIGINT},
+      AVAILABLE_STOCK = #{availableStock,jdbcType=BIGINT},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+      
+     where ID =  #{id,jdbcType=BIGINT}
+  </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="GoodsInfo">
     update IM_B_GOODS_INFO
     set TYPE = #{type,jdbcType=VARCHAR},
@@ -205,8 +213,8 @@
       STATUS = #{status,jdbcType=VARCHAR},
       COUNT = #{count,jdbcType=BIGINT},
       AVAILABLE_STOCK = #{availableStock,jdbcType=BIGINT},
-      CREATE_TIME = #{createTime,jdbcType=DATE},
-      UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
       DESCRIPTION = #{description,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=BIGINT}
   </update>
@@ -222,8 +230,8 @@
       STATUS = #{status,jdbcType=VARCHAR},
       COUNT = #{count,jdbcType=BIGINT},
       AVAILABLE_STOCK = #{availableStock,jdbcType=BIGINT},
-      CREATE_TIME = #{createTime,jdbcType=DATE},
-      UPDATE_TIME = #{updateTime,jdbcType=DATE}
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=BIGINT}
   </update>
   <select id="count" parameterType="com.taca.model.GoodsInfo" resultType="java.lang.Integer">
@@ -316,7 +324,7 @@
   <update id="changOffAndOnById" parameterType="java.util.Map">
     update IM_B_GOODS_INFO
     <set> STATUS = #{status,jdbcType=VARCHAR},
-      UPDATE_TIME =#{updateTime,jdbcType=DATE}
+      UPDATE_TIME =#{updateTime,jdbcType=TIMESTAMP}
     </set>
     where ID = #{id,jdbcType=BIGINT}
   </update>

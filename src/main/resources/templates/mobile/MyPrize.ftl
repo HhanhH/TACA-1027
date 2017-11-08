@@ -37,8 +37,8 @@
                 <!--缩略图在标题右边-->
                 <li class="am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-right pet_hd_list">
                    <a href="${base}/mobile/goods/${list.goodsId?default(0)?c}" class="pet_topci_block">
-                    <div class="pet_hd_block_title">Prize&nbsp;&nbsp;${list_index+1}</div>
-                    <div class="pet_hd_block_map"><i class="iconfont">&#xe632;</i>兑换奖品：${list.name}</div>
+                    <div class="pet_hd_block_title">兑换奖品：${list.name}</div>
+                    <div class="pet_hd_block_map"><i class="iconfont">&#xe632;</i>兑换时间：${list.createTime?date}</div>
                       <#if list.status=='FAIL'>
                       <div class="pet_hd_block_map"><i class="iconfont">&#xe632;</i>消耗星点：0</div>
                       <#else>
@@ -61,7 +61,7 @@
           </div>
         </div>
    
-        <div class="pet_article_footer_info">Copyright(c)2015 PetShow All Rights Reserved</div>
+         <#include "/mobile/includes/footer.ftl" />
       </div>
     </div>
     <script src="../../../static/mobile/js/jquery.min.js"></script>

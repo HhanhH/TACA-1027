@@ -174,6 +174,7 @@ public class QueryTaskListAction {
                 String feedBackWay = taskInfo.getFeedbackWay();
                 taskList.setFeedBackWay(feedBackWay);
                 taskList.setStarNumber(receiveTaskList.get(i).getPreStarNumber());
+                taskList.setActStarNumber(receiveTaskList.get(i).getActStarNumber());
                 taskList.setUserName(receiveTaskList.get(i).getUserName());
                 taskList.setTaskName(receiveTaskList.get(i).getName());
                 taskList.setContent(receiveTaskList.get(i).getContent());

@@ -55,6 +55,8 @@ public class AuditTaskBusService{
 	private SendEmailService sendEmailService;
 	
 
+	@Autowired
+	private TaskInfoMapper taskInfoMapper;
 
 	@Autowired
 	private FreeMarkerConfigurer freeMarkerConfigurer;
@@ -70,17 +72,27 @@ public class AuditTaskBusService{
 		
 		Date date = new Date();
 		ReceiveTask reciveTask = new ReceiveTask();
-		reciveTask.setId(id);
+		reciveTask =reciveTaskMapper.getById(id);
 		
 		reciveTask.setUpdateTime(date);
 		if(!count.equals(AdminConstants.TASK_SUBMIT_COUNT)){
+			//任务状态置为进行中，还可以进行第二次提交
 			reciveTask.setStatus(TaskStatus.PROCEEDING.name());
 		}else{
+			//更新任务库存+1
+			TaskInfo taskInfo = taskInfoMapper.selectByPrimaryKey(reciveTask.getTaskId());
+			taskInfo.setCount(taskInfo.getCount()-1);
+			taskInfo.setUpdateTime(new Date());
+			taskInfo.setAvailableStock(taskInfo.getAvailableStock()+1);
+			taskInfoMapper.updateCountById(taskInfo);
+			
 			reciveTask.setActStarNumber(0L);
 			reciveTask.setFinishedTime(date);
 			reciveTask.setStatus(TaskStatus.FINISHED.name());
 		}
+		reciveTask.setUpdateTime(new Date());
 		reciveTaskMapper.audit(reciveTask);
+		
 		
 		
 		Submissions submissions = new Submissions();

@@ -36,35 +36,38 @@
                  <ul class="am-list">
                  <li class="am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-right pet_hd_list">
                     <a href="###" class="pet_hd_block">
-                        <div class="pet_hd_block_title"><a href="${base}/mobile/mytask/detail/${myTaskList.userName}/${myTaskList_index}">Task ${myTaskList_index+1}:${myTaskList.taskName}</a></div>
+                        <div class="pet_hd_block_title"><a href="${base}/mobile/mytask/detail/${myTaskList.userName}/${myTaskList_index}">
+                        任务:&nbsp;&nbsp;${myTaskList.taskName}</a></div>
                        
-                        <div class="pet_hd_block_map"><i class="iconfont">&#xe632;</i>可获得${myTaskList.starNumber}星点
-                            
-                        </div>
+                       
                        <#if myTaskList.status=='FINISHED'>
+                        
                         <div class="pet_hd_block_map"><i class="iconfont">&#xe632;</i>已结束
                             
                         </div>
+                        <div class="pet_hd_block_map"><i class="iconfont">&#xe632;</i>获得${myTaskList.actStarNumber}星点</div>
                         <#elseif myTaskList.status=='PENDING'>
                           <div class="pet_hd_block_map"><i class="iconfont">&#xe632;</i>反馈审核中
-                            
                         </div>
+                        <div class="pet_hd_block_map"><i class="iconfont">&#xe632;</i>可获得${myTaskList.starNumber}星点</div>
                         
                         <#elseif (myTaskList.needFinish <= 0)>
-                         <div class="pet_hd_block_map"><i class="iconfont">&#xe632;</i>已完成，快去提交反馈吧
-                            
-                        </div>
+                         <div class="pet_hd_block_map"><i class="iconfont">&#xe632;</i>已完成，快去提交反馈吧 </div>
+                        <div class="pet_hd_block_map"><i class="iconfont">&#xe632;</i>可获得${myTaskList.starNumber}星点</div>
+                         
                          <#elseif myTaskList.status=='EXPIRED'>
-                          <div class="pet_hd_block_map"><i class="iconfont">&#xe632;</i>已过期
-                            
-                        </div>
+                          <div class="pet_hd_block_map"><i class="iconfont">&#xe632;</i>已过期</div>
+                       
                        <#else>
+                        <div class="pet_hd_block_map"><i class="iconfont">&#xe632;</i>可获得${myTaskList.starNumber}星点</div>
                         <div class="pet_hd_block_map"><i class="iconfont">&#xe632;</i>已完成${myTaskList.hadFinished}天
                             <div class="am-progress bar am-progress-striped am-active">
                                 <div class="am-progress-bar am-progress-bar-warning" style="width: 75%">还需要${myTaskList. needFinish}天</div>
                             </div>
                         </div>
+                        
                         <div class="pet_hd_block_tag">还需要<span class="hd_tag_jh">${myTaskList. needFinish}天</span></div>
+                       
                         </#if>
                     </a>
                 </li>
@@ -77,8 +80,7 @@
 
           </div>
         </div>
-        <div class="pet_article_footer_info">TAKA项目组</div>
-        <div class="pet_article_footer_info">Copyright(c)2017 PetShow All Rights Reserved</div>
+         <#include "/mobile/includes/footer.ftl" />
 
       </div>
     </div>

@@ -19,10 +19,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.taca.mapper.GoodsInfoMapper;
 import com.taca.mapper.ShoppingMapper;
 import com.taca.mapper.SubmissionsMapper;
 import com.taca.mapper.TransRecordMapper;
 import com.taca.mapper.UserInfoMapper;
+import com.taca.model.GoodsInfo;
 import com.taca.model.ReceiveTask;
 import com.taca.model.Shopping;
 import com.taca.model.Submissions;
@@ -50,7 +52,9 @@ public class AuditShoppingBusService{
 	@Autowired
 	private SendEmailService sendEmailService;
 
-
+	@Autowired
+	private GoodsInfoMapper goodsInfoMapper;
+	
 	@Autowired
 	private FreeMarkerConfigurer freeMarkerConfigurer;
 
@@ -65,6 +69,12 @@ public class AuditShoppingBusService{
 		shopping.setMessage(reason);
 		shopping.setFinishTime(date);
 		shoppingMapper.updateForAudit(shopping);
+		
+		GoodsInfo goodsInfo = goodsInfoMapper.selectByPrimaryKey(shopping.getGoodsId());
+		goodsInfo.setCount(goodsInfo.getCount()-1);
+		goodsInfo.setUpdateTime(new Date());
+		goodsInfo.setAvailableStock(goodsInfo.getAvailableStock()+1);
+		goodsInfoMapper.updateCountById(goodsInfo);
 		
 		TransRecord transRecord = new TransRecord();
 		Long transId = shoppingMapper.getTransId(id);
@@ -84,38 +94,38 @@ public class AuditShoppingBusService{
 		
 		final Long inlog = id;
 		final String reaString = reason;
-       new Thread(new Runnable() {
+		new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
-		Shopping shopping = shoppingMapper.selectByPrimaryKey(inlog);
-		String um = shoppingMapper.getUMById(inlog);
-		String title="激励兑换审核失败通知";
-		String receiver=um+"@pingan.com.cn";
-		//读取邮件模板
-		Template template=null;
-		String content="";
-		try {
-			template= freeMarkerConfigurer.getConfiguration().getTemplate("/emailTemplates/shoppingAuditFail.ftl");
-			Map map=new HashMap();
-			map.put("reason",reaString);
-			map.put("name", shopping.getName());
-			map.put("content", shopping.getContent());
-			content = FreeMarkerTemplateUtils.processTemplateIntoString(template,map);
-		}
-		catch (Exception e){
-			log.info("邮件读取出错",e);
-			throw new BusinessException(IMResp.TEMPLATE_LOAD_ERROR);
-		}
-		log.info("解析结果："+content);
-		sendEmailService.sendEmail(title,content,receiver);
+				Shopping shopping = shoppingMapper.selectByPrimaryKey(inlog);
+				String um = shoppingMapper.getUMById(inlog);
+				String title="激励兑换审核失败通知";
+				String receiver=um+"@pingan.com.cn";
+				//读取邮件模板
+				Template template=null;
+				String content="";
+				try {
+					template= freeMarkerConfigurer.getConfiguration().getTemplate("/emailTemplates/shoppingAuditFail.ftl");
+					Map map=new HashMap();
+					map.put("reason",reaString);
+					map.put("name", shopping.getName());
+					map.put("content", shopping.getContent());
+					content = FreeMarkerTemplateUtils.processTemplateIntoString(template,map);
+				}
+				catch (Exception e){
+					log.info("邮件读取出错",e);
+					throw new BusinessException(IMResp.TEMPLATE_LOAD_ERROR);
+				}
+					log.info("解析结果："+content);
+					sendEmailService.sendEmail(title,content,receiver);
 		
+				}
 			}
-		}
-				).start();
-		return 1;
+    		   ).start();
+			return 1;
 		
-	}
+		}
 	
 
 	@Transactional

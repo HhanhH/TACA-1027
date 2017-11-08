@@ -16,6 +16,7 @@ public class TaskList {
     private int star;
 
     private Long starNumber;
+    private Long actStarNumber;
     private List<Long> starList;
     private Long taskId;
 
@@ -55,11 +56,21 @@ public class TaskList {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+    
 
-    public int getStar() {
+    public Long getActStarNumber() {
+		return actStarNumber;
+	}
+
+	public void setActStarNumber(Long actStarNumber) {
+		this.actStarNumber = actStarNumber;
+	}
+
+	public int getStar() {
         return star;
     }
 
+    
     public void setStar(int star) {
         this.star = star;
     }

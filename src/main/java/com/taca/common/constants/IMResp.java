@@ -37,6 +37,7 @@ public enum IMResp {
     RANDOMCODE_NOT_GET("000029","请先获取验证码"),
     DATE_COM_ERROR("000030","日期比较出现异常"),
     OLD_PWD_ERROR("000031","旧密码不正确"),
+    FILE_EXPORT_ERROR("000031","旧密码不正确"),
     DBEXCEPTION("555555","数据库异常"),
     FAIL("999999","系统异常"),
     ;

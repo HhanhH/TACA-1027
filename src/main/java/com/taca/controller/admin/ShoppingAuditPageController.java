@@ -55,4 +55,15 @@ public class ShoppingAuditPageController {
 		return "admin/historyAuditAwardList";
 	}
 	
+	@RequestMapping("export")
+	public void export(Model model,Shopping shopping,String createTime1,String createTime2,HttpServletResponse response){
+		
+
+		Map<String , Object> map = new HashMap<>();
+		map.put("createTime1", createTime1);
+		map.put("createTime2", createTime2);
+		shoppingAuditAction.getHistoryAuditList(map,shopping,response);
+		
+	}
+	
 }

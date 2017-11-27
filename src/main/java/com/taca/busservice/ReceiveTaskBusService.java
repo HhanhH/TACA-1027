@@ -52,7 +52,7 @@ public class ReceiveTaskBusService {
         receiveTask.setPreStarNumber(taskInfo.getStarProfit());
         receiveTask.setStatus(TaskStatus.PROCEEDING.toString());
         receiveTask.setStartTime(new Date());
-        receiveTask.setExpectedTime(DateUtil.getDateAfter(new Date(),taskInfo.getTimeLength().intValue()));
+        receiveTask.setExpectedTime(DateUtil.getDateAfter(new Date(),taskInfo.getTimeLength().intValue()+1));
         System.out.println(receiveTask.getExpectedTime());
         receiveTask.setCreateTime(new Date());
         receiveTask.setUpdateTime(new Date());

@@ -42,8 +42,8 @@
 						id="table1">
 
 						<tr>
-							<td>激励名称:<input type="text" name="name" value="${shopping.name}" style="width: 90px"></td>
-							<td>用户名称:<input type="text" name="username" value="${shopping.username}" style="width: 90px"></td>
+							<td>激励名称:<input type="text" name="name"  id="name" value="${shopping.name}" style="width: 90px"></td>
+							<td>用户名称:<input type="text" name="username" id="username" value="${shopping.username}" style="width: 90px"></td>
 							<td>创建时间：
 							<input type="Date" name="createTime1"
 								id="createTime1" style="width: 130px"
@@ -60,6 +60,10 @@
 									class="am-btn am-btn-default am-btn-xs am-text-secondary"
 									
 									style="background-color: #63B8FF; color: white;">搜索</button>
+									<button onclick="javascript:return exportExcel();"
+									class="am-btn am-btn-default am-btn-xs am-text-secondary"
+									
+									style="background-color: #63B8FF; color: white;">导出</button>
 							</td>
 						</tr>
 					</table>

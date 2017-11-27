@@ -71,7 +71,6 @@ public class AuditShoppingBusService{
 		shoppingMapper.updateForAudit(shopping);
 		
 		GoodsInfo goodsInfo = goodsInfoMapper.selectByPrimaryKey(shopping.getGoodsId());
-		goodsInfo.setCount(goodsInfo.getCount()-1);
 		goodsInfo.setUpdateTime(new Date());
 		goodsInfo.setAvailableStock(goodsInfo.getAvailableStock()+1);
 		goodsInfoMapper.updateCountById(goodsInfo);

@@ -22,3 +22,15 @@ $(function(){
     		
     });
 }); 
+
+function exportExcel(){
+	var name = $('#name').val();
+	var userName = $('#userName').val();
+	var createTime1 = $('#createTime1').val();
+	var createTime2 = $('#createTime2').val();
+	
+	
+	
+	window.location.href = "export?name="+name+"&userName="+userName+"&createTime1="+createTime1+"&createTime2="+createTime2;
+	return false;
+}

@@ -35,6 +35,8 @@ public interface ShoppingMapper {
 
     List<Shopping> getHisListByPage(Map map);
 
+    List<Shopping> getHisList(Map map);
+    
     Long getTransId(Long id);
 
     Integer updateForAudit(Shopping shopping);

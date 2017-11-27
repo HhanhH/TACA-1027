@@ -38,7 +38,7 @@
                 <li class="am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-right pet_hd_list">
                    <a href="${base}/mobile/goods/${list.goodsId?default(0)?c}" class="pet_topci_block">
                     <div class="pet_hd_block_title">兑换奖品：${list.name}</div>
-                    <div class="pet_hd_block_map"><i class="iconfont">&#xe632;</i>兑换时间：${list.createTime?date}</div>
+                    <div class="pet_hd_block_map"><i class="iconfont">&#xe632;</i>兑换时间：&nbsp;${list.createTime?string("yyyy-MM-dd HH:mm:ss")}</div>
                       <#if list.status=='FAIL'>
                       <div class="pet_hd_block_map"><i class="iconfont">&#xe632;</i>消耗星点：0</div>
                       <#else>

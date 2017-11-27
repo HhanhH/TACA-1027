@@ -76,12 +76,11 @@ public class AuditTaskBusService{
 		
 		reciveTask.setUpdateTime(date);
 		if(!count.equals(AdminConstants.TASK_SUBMIT_COUNT)){
-			//任务状态置为进行中，还可以进行第二次提交
+			//count=1，第一次审核拒绝，任务状态置为进行中，还可以进行第二次提交
 			reciveTask.setStatus(TaskStatus.PROCEEDING.name());
 		}else{
-			//更新任务库存+1
+			//count=2，第二次审核拒绝，任务置为结束，更新任务库存+1
 			TaskInfo taskInfo = taskInfoMapper.selectByPrimaryKey(reciveTask.getTaskId());
-			taskInfo.setCount(taskInfo.getCount()-1);
 			taskInfo.setUpdateTime(new Date());
 			taskInfo.setAvailableStock(taskInfo.getAvailableStock()+1);
 			taskInfoMapper.updateCountById(taskInfo);
@@ -189,7 +188,6 @@ public class AuditTaskBusService{
 			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				ReceiveTask receiveTask = reciveTaskMapper.getById(reciveTaskId);
 				String etitle="任务审核通过";
 				String receiver=userName+"@pingan.com.cn";

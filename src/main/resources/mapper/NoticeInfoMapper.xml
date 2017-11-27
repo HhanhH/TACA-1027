@@ -188,7 +188,7 @@
     <if test="createTime2 != null and  createTime2!=''">
       and UNIX_TIMESTAMP(IM_B_NOTICE_INFO.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime2},'%Y-%m-%d %H-%i-%s'))
     </if>
-    order by STATUS  ASC
+    order by STATUS  ASC,UPDATE_TIME DESC
     limit
     #{page.dbIndex},#{page.dbNumber}
 

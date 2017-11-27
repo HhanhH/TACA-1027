@@ -40,8 +40,19 @@ public class TaskList {
     
     private String fileAddress;
     private String receiveBook;
+    private String auditStatus;
+    private String rejectMessage;
+    private Date createTime;
 
-    public Long getId() {
+    public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -49,7 +60,23 @@ public class TaskList {
         this.id = id;
     }
 
-    public String getUserName() {
+    public String getAuditStatus() {
+		return auditStatus;
+	}
+
+	public void setAuditStatus(String auditStatus) {
+		this.auditStatus = auditStatus;
+	}
+
+	public String getRejectMessage() {
+		return rejectMessage;
+	}
+
+	public void setRejectMessage(String rejectMessage) {
+		this.rejectMessage = rejectMessage;
+	}
+
+	public String getUserName() {
         return userName;
     }
 

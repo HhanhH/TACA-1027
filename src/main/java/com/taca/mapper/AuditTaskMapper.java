@@ -14,5 +14,6 @@ public interface AuditTaskMapper {
 	List<AuditTask> getAuditList(Map map);
 	Integer countHis(Map map);
 	List<AuditTask> getHisAuditList(Map map);
+	List<AuditTask> getHisAuditListForExport(Map map);
 
 }

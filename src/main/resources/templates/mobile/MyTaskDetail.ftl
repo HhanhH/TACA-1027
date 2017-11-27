@@ -34,7 +34,7 @@
 </div>
   <article data-am-widget="paragraph" class="am-paragraph am-paragraph-default pet_content_article" data-am-paragraph="{ tableScrollable: true, pureview: true }">
   <h1 class="pet_article_title">${detail.taskName}</h1>
-  <div class="pet_article_user_time pet_hd_con_time"><i class="iconfont">&#xe617;</i>${detail.startTime} 00:00:00 ～${detail.endTime} 00:00:00</div>
+  <div class="pet_article_user_time pet_hd_con_time"><i class="iconfont">&#xe617;</i>截至时间：${detail.endTime} 00:00:00</div>
   <div class="pet_article_user_time pet_hd_con_map"><i class="iconfont">&#xe615;</i>与你一同参加：${detail.personNum} 人</div>
   <div class="pet_hd_con_gp">
     

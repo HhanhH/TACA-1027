@@ -3,10 +3,18 @@ package com.taca.common.util;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -20,6 +28,13 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+
+
+
+
+
+
 
 
 
@@ -144,17 +159,15 @@ public class ExcelUtil<T> {
     }
 
 
-    /*public static <T> List<T> getModelsFromexcel(Class<T> t, File file) {
+    public static <T> List<T> getModelsFromexcel(Class<T> t, File file) {
         List<T> models = null;
         try {
             Workbook wb = readExcel(file);
             String[] titles = readExcelTitle(wb);
             models = readExcelContent(titles, wb, t);
         } catch (Exception e) {
-            logger.error("getModelsFromexcel() error", e);
+        	throw new IMRunTimeException(IMResp.FAIL);
         }
-        logger.info("getModelsFromexcel() models数据 " + models);
-        logger.info("getModelsFromexcel() end");
         return models;
     }
 
@@ -164,21 +177,20 @@ public class ExcelUtil<T> {
             InputStream is = new FileInputStream(file);
             wb = new XSSFWorkbook(is);
         } catch (Exception e) {
-            logger.error("readExcel() error", e);
+        	throw new IMRunTimeException(IMResp.FAIL);
         }
         return wb;
     }
 
 
-    *//**
+    /**
      * 获取excel的title
      * 这一步可以通过反射实现
      *
      * @return title
      * @throws Exception
-     *//*
+     */
     public static String[] readExcelTitle(Workbook wb) {
-        logger.info("readExcelTitle() start");
         String[] titles = null;
         try {
             if (wb == null) {
@@ -193,20 +205,18 @@ public class ExcelUtil<T> {
                 titles[i] = row.getCell(i).getStringCellValue();
             }
         } catch (Exception e) {
-            logger.error("title读取失败", e);
+        	throw new IMRunTimeException(IMResp.FAIL);
         }
-        logger.info("readExcelTitle() end");
         return titles;
     }
 
-    *//**
+    /**
      * 获取到文件的数据
      *
      * @return
      * @throws Exception
-     *//*
+     */
     public static <T> List<T> readExcelContent(String[] titles, Workbook wb, Class<T> clazz) {
-        logger.info("readExcelContent() start");
         List<T> models = null;
         boolean isError = false;
         T t = null;
@@ -230,8 +240,8 @@ public class ExcelUtil<T> {
                 try {
                     t = clazz.newInstance();
                 } catch (Exception e) {
-                    logger.error("clazz没找到", e);
-                }
+                	throw new IMRunTimeException(IMResp.FAIL);
+                	}
                 for (int j = 0; j < colNum; j++) {
                     try {
                         Object obj = getCellFormatValue(row.getCell(j));
@@ -244,7 +254,7 @@ public class ExcelUtil<T> {
                         field.set(t, obj);
                     } catch (Exception e) {
                         isError = true;
-                        logger.error("解析出现错误 行 列" + (i + 1) + "  " + (j + 1), e);
+                        throw new IMRunTimeException(IMResp.FAIL);
                     }
                     if (!isError) {
                         models.add(t);
@@ -259,20 +269,18 @@ public class ExcelUtil<T> {
 
         }
 
-        logger.info("readExcelContent() models" + models);
-        logger.info("readExcelContent() end");
         return models;
     }
 
 
-    *//**
+    /**
      * 在对field的set的过程中 需要强制类型
      * 并不一致的类型会导致数据无法正常写入
      *
      * @param type
      * @param obj
      * @return
-     *//*
+     */
     private static Object transform(Class<?> type, Object obj) {
         if (obj == null || obj.equals(""))
             return null;
@@ -296,12 +304,12 @@ public class ExcelUtil<T> {
         return obj;
     }
 
-    *//**
+    /**
      * 根据cell的具体类型 获取到相应的数据
      *
      * @param cell
      * @return
-     *//*
+     */
     private static Object getCellFormatValue(Cell cell) {
         Object cellvalue = null;
         if (cell != null) {
@@ -329,7 +337,6 @@ public class ExcelUtil<T> {
     }
 
     public static <T> Workbook parseListToWorkbook(List<T> list, Class<T> clazz) {
-        logger.info("ParseListToWorkbook() start:" + list + clazz);
         if (list == null) {
             return null;
         }
@@ -344,7 +351,6 @@ public class ExcelUtil<T> {
 
 
     public static void writeExcel(Workbook workbook, String filePath) {
-        logger.info("writeExcel() start:" + workbook + filePath);
         OutputStream out = null;
         try {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -356,13 +362,12 @@ public class ExcelUtil<T> {
             workbook.write(out);
             out.close();
         } catch (Exception e) {
-            logger.error("writeExcel异常" + e);
+        	throw new IMRunTimeException(IMResp.FAIL);
         }
 
     }
 
     public static List<String> writeExcelTitle(Class clazz, Workbook workbook) {
-        logger.info("writeExcelTitle() start:" + clazz + workbook);
         List<String> titles = new ArrayList<String>();
         if (workbook == null) {
             return null;
@@ -381,17 +386,14 @@ public class ExcelUtil<T> {
             }
 
         }
-        logger.info("writeExcelTitle()" + titles);
         return titles;
     }
 
 
     public static <T> void writeExcelContent(List<T> models, Class clazz, List<String> titles, Workbook workbook) {
-        logger.info("wirteExcelContent() start:" + models + clazz + titles + workbook);
 
         try {
             if (workbook == null) {
-                logger.info("writeExcelContent():workbook == null");
                 return;
             }
             int countSheet = workbook.getNumberOfSheets();
@@ -419,7 +421,7 @@ public class ExcelUtil<T> {
             }
 
         } catch (Exception e) {
-            logger.error("writeExcelContent():写入内容异常" + e);
+        	throw new IMRunTimeException(IMResp.FAIL);
         }
 
     }
@@ -438,15 +440,28 @@ public class ExcelUtil<T> {
         }
     }
 
+    
+    public static void writeExcelToResponse(Workbook workbook, String fileName, HttpServletResponse response) throws IOException {
+        try {
+            OutputStream output=response.getOutputStream();
+            response.reset();
+            response.setHeader("Content-disposition","attachment;filename="+new String(fileName.getBytes()));
+            response.setContentType("Content-Type:application/vnd.ms-excel");
+            workbook.write(output);
+            output.flush();
+            output.close();
+        } catch (Exception e) {
+        	throw new IMRunTimeException(IMResp.FAIL);
+        }
+    }
 
     public static void main(String[] args) {
 //        ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:spring/spring-beans.xml");
 //        BaseService baseService = (BaseService) context.getBean("mockEnvironmentServiceImpl");
 //
 //        ExcelUtil.writeExcel(ExcelUtil.parseListToWorkbook(baseService.getList(null), MockEnvironment.class), "D:");
-        getModelsFromexcel(UserInfo.class, new File("D:/20160801162802.xlsx"));
+       // getModelsFromexcel(UserInfo.class, new File("D:/20160801162802.xlsx"));
     }
 
 }
-*/
-}
+

@@ -17,6 +17,7 @@ import com.taca.model.ReceiveTask;
 import com.taca.service.ReceiveTaskService;
 import com.taca.service.SendEmailService;
 import com.taca.service.UserInfoService;
+import com.taca.common.util.ExcelUtil;
 import com.taca.common.util.FileToZip;
 import  com.taca.common.util.ZipCompress;
 
@@ -121,6 +122,19 @@ public class TaskAuditAction {
 	
 	}
 	
+	public void export(Map<String, Object> map,AuditTask auditTask ,HttpServletResponse response) {
+		map.put("auditTask", auditTask);
+		List<AuditTask> list = null;
+		list = taskAuditService.getHisAuditList(map);
+		try {
+			ExcelUtil.writeExcelToResponse(ExcelUtil.parseListToWorkbook(list, AuditTask.class), "historyAuditTask.xlsx", response);
+		} catch (IOException e) {
+			 log.info("文件导出失败!");  
+	            throw new IMRunTimeException(IMResp.FILE_EXPORT_ERROR);
+	            
+		}
+	
+	}
 	public void download(String fileAddress,HttpServletResponse response) {
 		//fileAddress.substring(0,fileAddress.length()-1).replace("/", "\\");  
 		    String sourceFilePath = fileAddress.substring(0,fileAddress.length()-1);

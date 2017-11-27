@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.taca.action.TaskAuditAction;
 import com.taca.common.util.Page;
@@ -54,6 +55,18 @@ public class TaskAuditPageController {
 		model.addAttribute("createTime1", createTime1);
 		model.addAttribute("createTime2", createTime2);
 		return "admin/historyAuditTaskList";
+	}
+	
+	
+	@RequestMapping("export")
+	@ResponseBody
+	public void  export(Model model,AuditTask auditTask,String createTime1,String createTime2,HttpServletResponse response){
+		Map<String , Object> map = new HashMap<>();
+		map.put("createTime1", createTime1);
+		map.put("createTime2", createTime2);
+		
+		taskAuditAction.export(map, auditTask, response);
+		
 	}
 	
 	@RequestMapping("download")

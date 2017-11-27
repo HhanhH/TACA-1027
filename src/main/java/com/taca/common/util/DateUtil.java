@@ -506,12 +506,22 @@ public class DateUtil {
                 return true;
             }
         } catch (Exception exception) {
-            throw new BusinessException(IMResp.ACCOUNT_IS_ILLEGAL);
+            throw new BusinessException(IMResp.FAIL);
         }
     }
     //计算时间差，返回相差的天数
     public static long subDate(Date start,Date end){
-        return (end.getTime()-start.getTime())/(24 * 3600 * 1000);
+    	 DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    	 try {
+    		 String star = df.format(start);
+    		 String en = df.format(end);
+			start = df.parse(star);
+			end = df.parse(en);
+		} catch (ParseException e) {
+			throw new BusinessException(IMResp.FAIL);
+		}
+    	 
+        return (end.getTime()-start.getTime())/(24*3600*1000);
     }
     public static void main(String[] args) {
         Date currentTime = Calendar.getInstance().getTime();

@@ -34,6 +34,9 @@ public class TaskAuditServiceImpl implements TaskAuditService{
 	public List<AuditTask> getHisAuditListByPage(Map map) {
 		return auditTaskMapper.getHisAuditList(map);
 	}
-
+	@Override
+	public List<AuditTask> getHisAuditList(Map map) {
+		return auditTaskMapper.getHisAuditListForExport(map);
+	}
 
 }

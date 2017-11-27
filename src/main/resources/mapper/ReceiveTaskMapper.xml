@@ -65,7 +65,7 @@
       CONTENT)
     values (#{id,jdbcType=BIGINT}, #{taskId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},
       #{actStarNumber,jdbcType=BIGINT}, #{preStarNumber,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, 
-      #{transId,jdbcType=BIGINT}, #{startTime,jdbcType=TIMESTAMP}, #{expectedTime,jdbcType=TIMESTAMP},
+      #{transId,jdbcType=BIGINT}, #{startTime,jdbcType=TIMESTAMP}, #{expectedTime,jdbcType=DATE},
       #{finishedTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
       #{content,jdbcType=LONGVARCHAR})
   </insert>
@@ -250,7 +250,7 @@
     <include refid="Blob_Column_List" />
     from IM_D_RECEIVE_TASK
     where USER_NAME=#{userName}
-    ORDER BY STATUS DESC
+    ORDER BY STATUS DESC,CREATE_TIME DESC
   </select>
 
   <select id="selectTaskUser" parameterType="java.lang.String" resultType="java.lang.String">

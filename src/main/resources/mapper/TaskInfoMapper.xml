@@ -110,7 +110,7 @@
   </select>
 
   <select id="getTypeList" resultType="java.lang.String">
-    select distinct CATEGORY  from IM_B_TASK_INFO where CATEGORY is not null
+    select distinct CATEGORY  from IM_B_TASK_INFO where CATEGORY is not null and STATUS ='ON'
   </select>
 
   <select id="getStarLevelList" resultType="java.lang.Long">
@@ -413,7 +413,7 @@
   <select id="getCategoryList" resultType="java.lang.String">
     select DISTINCT CATEGORY as category
     from IM_B_TASK_INFO
-    where IM_B_TASK_INFO.CATEGORY is not null and IM_B_TASK_INFO.STATUS = 'ON'
+    where IM_B_TASK_INFO.CATEGORY is not null 
   </select>
 
   <select id="queryList" parameterType="com.taca.model.TaskInfo" resultMap="BaseResultMap">

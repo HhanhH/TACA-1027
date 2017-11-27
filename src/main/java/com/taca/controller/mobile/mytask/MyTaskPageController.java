@@ -48,6 +48,7 @@ public class MyTaskPageController {
         String username=(String)httpSession.getAttribute("username");
         List<TaskList> myTaskList =  queryTaskListAction.selectUserTask(username);
         model.addAttribute("myTaskList", myTaskList);
+        model.addAttribute("userName", username);
         return "mobile/MyTaskList";
     }
     /**
@@ -59,7 +60,7 @@ public class MyTaskPageController {
      */
     @RequestMapping("/detail/{user}/{taskNum}")
     public String selectTaskDetail(@PathVariable String user,@PathVariable String taskNum,Model model,HttpSession session){
-    	if(user.equalsIgnoreCase(session.getAttribute("username").toString())){
+    	if(user.trim().equalsIgnoreCase(session.getAttribute("username").toString().trim())){
     		List<TaskList> myTaskList =  queryTaskListAction.selectUserTask(user);
     		TaskList taskList = myTaskList.get(Integer.parseInt(taskNum));
     		model.addAttribute("detail", taskList);

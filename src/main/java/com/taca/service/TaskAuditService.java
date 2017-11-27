@@ -11,6 +11,7 @@ public interface TaskAuditService {
 	List<AuditTask> getAuditListByPage(Map map);
 	Integer countForHisAudit(Map<String, Object> map);
 	List<AuditTask> getHisAuditListByPage(Map map);
+	List<AuditTask> getHisAuditList(Map map);
 
 
 

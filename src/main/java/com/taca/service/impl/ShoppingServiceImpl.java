@@ -52,6 +52,12 @@ public class ShoppingServiceImpl implements ShoppingService {
 
 		return shoppingMapper.getHisListByPage(map);
 	}
+	
+	@Override
+	public List<Shopping> getHisAuditList(Map<String,Object> map) {
+
+		return shoppingMapper.getHisList(map);
+	}
 	@Override
 	public Integer count() {
 		Shopping shopping = new Shopping();

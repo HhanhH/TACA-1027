@@ -548,17 +548,17 @@
  	<select id="getGroupNameByGroupId" parameterType="java.lang.Long" resultType="java.lang.String">
        select GROUP_NAME 
        from 
-       (select GROUP_ID,ANY_VALUE(GROUP_NAME) as GROUP_NAME from IM_D_USER_INFO GROUP BY GROUP_ID ) m
+       (select GROUP_ID, ANY_VALUE(GROUP_NAME) as  GROUP_NAME from IM_D_USER_INFO GROUP BY GROUP_ID ) m
        where m.GROUP_ID = #{groupId}
   </select>
-  
+ 
   	<select id="getGroupIdByGroupName" parameterType="java.lang.String" resultType="java.lang.Long">
        select GROUP_ID 
        from 
-       (select GROUP_ID,ANY_VALUE(GROUP_NAME) as GROUP_NAME from IM_D_USER_INFO GROUP BY GROUP_ID ) m
+       (select GROUP_ID,  ANY_VALUE(GROUP_NAME) as GROUP_NAME from IM_D_USER_INFO GROUP BY GROUP_ID ) m
        where m.GROUP_NAME = #{groupName}
     </select>
-    
+   
     <update id="updatePwd" parameterType="UserInfo">
          update IM_D_USER_INFO
          set password = #{password}

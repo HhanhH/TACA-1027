@@ -133,8 +133,35 @@
     <if test="createTime2 != null and  createTime2!=''">
       and UNIX_TIMESTAMP(IM_D_RECEIVE_TASK.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime2},'%Y-%m-%d %H-%i-%s'))
     </if>
+    order by IM_D_RECEIVE_TASK.CREATE_TIME DESC
     limit
     #{page.dbIndex},#{page.dbNumber}
   </select>
   
+  
+   <select id="getHisAuditListForExport" parameterType="java.util.Map" resultMap="ResultMapWithBLOBs">
+ 
+    select 
+   <include refid="Base_Column_List" />
+    ,
+    IM_D_SUBMISSIONS.STATUS
+    
+    from IM_D_RECEIVE_TASK,IM_D_SUBMISSIONS
+    where 
+    IM_D_SUBMISSIONS.STATUS IN ('AGREE','REJECT')
+    and IM_D_RECEIVE_TASK.ID = IM_D_SUBMISSIONS.RECEIVE_TASK_ID
+   <if test="auditTask.name!=null and auditTask.name!=''">
+	and IM_D_RECEIVE_TASK.NAME like CONCAT('%',#{auditTask.name},'%')
+	</if>
+	<if test="auditTask.userName!=null and auditTask.userName!=''">
+	and IM_D_RECEIVE_TASK.USER_NAME like CONCAT('%',#{auditTask.userName},'%')
+	</if>
+	<if test="createTime1 != null and  createTime1!=''">
+      and UNIX_TIMESTAMP(IM_D_RECEIVE_TASK.CREATE_TIME) &gt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime1},'%Y-%m-%d %H-%i-%s'))
+    </if>
+    <if test="createTime2 != null and  createTime2!=''">
+      and UNIX_TIMESTAMP(IM_D_RECEIVE_TASK.CREATE_TIME) &lt;= UNIX_TIMESTAMP(STR_TO_DATE(#{createTime2},'%Y-%m-%d %H-%i-%s'))
+    </if>
+   order by IM_D_RECEIVE_TASK.CREATE_TIME DESC
+  </select>
 </mapper>

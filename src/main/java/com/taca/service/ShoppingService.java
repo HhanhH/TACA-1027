@@ -12,6 +12,7 @@ public interface ShoppingService {
 	List<Shopping> getAuditListByPage(Map<String,Object> map);
 	Integer countForHisAudit(Map<String,Object> map);
 	List<Shopping> getHisAuditListByPage(Map<String,Object> map);
+	List<Shopping> getHisAuditList(Map<String,Object> map);
 	Long getTransId(Long id);
 	Shopping getById(Long id);
 	Integer count();

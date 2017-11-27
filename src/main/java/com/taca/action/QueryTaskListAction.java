@@ -165,6 +165,10 @@ public class QueryTaskListAction {
                 		taskList.setFileAddress(submissions.getFileAddress());
                 		taskList.setReceiveBook(submissions.getReceiveBook());
                 	}
+                	if(receiveTaskList.get(i).getStatus().equals("FINISHED")){
+                		taskList.setAuditStatus(submissions.getStatus());
+                		taskList.setRejectMessage(submissions.getMessage());
+                	}
                 }
                 Date startDate =receiveTaskList.get(i).getStartTime();
                 taskList.setId(receiveTaskList.get(i).getId());
@@ -175,14 +179,18 @@ public class QueryTaskListAction {
                 taskList.setFeedBackWay(feedBackWay);
                 taskList.setStarNumber(receiveTaskList.get(i).getPreStarNumber());
                 taskList.setActStarNumber(receiveTaskList.get(i).getActStarNumber());
-                taskList.setUserName(receiveTaskList.get(i).getUserName());
+                taskList.setUserName(receiveTaskList.get(i).getUserName().trim());
                 taskList.setTaskName(receiveTaskList.get(i).getName());
                 taskList.setContent(receiveTaskList.get(i).getContent());
                 taskList.setHadFinished(DateUtil.subDate(startDate,new Date()));
-                taskList.setNeedFinish(1+Integer.parseInt(String.valueOf((endDate.getTime() - new Date().getTime()) / (24 * 3600 * 1000))));
+                taskList.setNeedFinish(taskInfo.getTimeLength()-taskList.getHadFinished());
+               // taskList.setNeedFinish(DateUtil.subDate(new Date(),endDate));
+               // taskList.setNeedFinish(1+Integer.parseInt(String.valueOf((endDate.getTime() - new Date().getTime()) / (24 * 3600 * 1000))));
                 taskList.setStartTime(sdf.format(startDate));
                 taskList.setEndTime(sdf.format(endDate));
                 taskList.setStatus(receiveTaskList.get(i).getStatus());
+                taskList.setCreateTime(receiveTaskList.get(i).getCreateTime());
+                
                 taskList.setStar(Integer.parseInt(String.valueOf(taskInfo.getStarLevel())));
                 List<Long> list = new ArrayList<>();
                 for(int j=0;j<taskInfo.getStarLevel();j++){

@@ -1,5 +1,20 @@
 package com.taca.job;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+
 import com.taca.common.bean.ResultBean;
 import com.taca.common.constants.IMResp;
 import com.taca.common.enumstatus.TaskStatus;
@@ -10,23 +25,6 @@ import com.taca.service.SendEmailService;
 import com.taca.service.UserInfoService;
 
 import freemarker.template.Template;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by jetty on 17/9/20.
@@ -132,7 +130,7 @@ public class TimerJob {
     }
     
     
-    @Scheduled(cron = "0 0 8 * * ?")
+    @Scheduled(cron = "0 0 10 * * ?")
     public void resetTimeOutTask(){
     	List<ReceiveTask> tasks = receiveTaskService.getTimeOutReceiveTask();    	
         try {

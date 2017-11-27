@@ -17,7 +17,8 @@
  <div class="foods" style="width: 100%; background-color: #B3B3B3;height: 43px;float: left;
     text-align: center;font-size: 12px;line-height: 43px;color: #fff;overflow: hidden;position:relative; bottom:0;">
   <ul style="width: 95%;float: left;padding: 0px;margin: 0px;">
-                        版权所有@2017
+  <a href="http://miitbeian.gov.cn" style="color:#9E9E9E">沪ICP备17051438</a>
+                     
   </ul>
  
 </div>

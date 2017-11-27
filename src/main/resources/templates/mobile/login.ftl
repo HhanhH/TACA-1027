@@ -40,7 +40,7 @@
 	<div style="text-align:center;color:#F00">	
 	请注意：第一次登录请在"我的账户"点击修改密码。
 	</div>
-	
+	 <#include "/mobile/includes/footer.ftl" />
 </div>
 <script src="../../static/mobile/js/jquery.min.js"></script>
 <script src="../../static/mobile/js/amazeui.min.js"></script>

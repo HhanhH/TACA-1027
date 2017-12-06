@@ -64,6 +64,8 @@ public class MyTaskPageController {
     		List<TaskList> myTaskList =  queryTaskListAction.selectUserTask(user);
     		TaskList taskList = myTaskList.get(Integer.parseInt(taskNum));
     		model.addAttribute("detail", taskList);
+    	    String userName=(String)session.getAttribute("username");
+    		model.addAttribute("userName", userName);
     		log.info("testDetail is actioning "+user);
     		return "mobile/MyTaskDetail";
     	}else{
@@ -79,7 +81,7 @@ public class MyTaskPageController {
      */
     @RequestMapping(value = "/update/{userName}/{id}",method = RequestMethod.POST)
     public String submitBack(@PathVariable Long id, @PathVariable String userName, @RequestParam(value = "text") String text, @RequestParam(value = "taskId") Long taskId, @RequestParam(value = "file", required = false) MultipartFile[] file,HttpSession session){
-       if(!userName.equals(session.getAttribute("username"))){
+       if(!userName.equalsIgnoreCase((String)session.getAttribute("username"))){
     	   return "redirect:../../../login";
        }
     	int i = 0;

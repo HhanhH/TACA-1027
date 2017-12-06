@@ -46,7 +46,7 @@ public class ReceiveTaskBusService {
         ReceiveTask receiveTask=new ReceiveTask();
         receiveTask.setTaskId(id);
         receiveTask.setTransId(0L);
-        receiveTask.setUserName(username);
+        receiveTask.setUserName(username.trim());
         receiveTask.setName(taskInfo.getName());
         receiveTask.setContent(taskInfo.getContent());
         receiveTask.setPreStarNumber(taskInfo.getStarProfit());

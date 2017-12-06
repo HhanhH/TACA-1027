@@ -60,7 +60,7 @@
    		<p>${detail.feedBackWay}</p>
  		<div class="pet_hd_con_gp_list_nr_tag">提交任务反馈</div>
    	 <br></br>
-   	   <form id="updateFile" action="${base}/mobile/mytask/update/${detail.userName}/${detail.id}" method="post" enctype="multipart/form-data" >
+   	   <form id="updateFile" action="${base}/mobile/mytask/update/${userName}/${detail.id}" method="post" enctype="multipart/form-data" >
         <textarea style="width: 80%;height: 100px;" id="text" name="text"></textarea><br><br>
         <div>
          <input id="taskName" name="taskId"  multiple="multiple" type="hidden" value="${detail.taskId}"></input>

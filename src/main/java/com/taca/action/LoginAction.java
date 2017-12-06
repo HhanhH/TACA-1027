@@ -110,7 +110,7 @@ public class LoginAction {
         	throw new BusinessException(IMResp.PASSWORD_UNCORRECT);
         }
        httpSession.setMaxInactiveInterval(60*30);
-       httpSession.setAttribute("username",username);
+       httpSession.setAttribute("username",userInfo.getUserName());
        return new ResultBean(IMResp.SUCCESS);
     }
     

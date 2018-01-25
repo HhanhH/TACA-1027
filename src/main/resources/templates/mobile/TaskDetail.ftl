@@ -46,7 +46,7 @@
                                   <div class="pet_hd_block_tag"><strong>时限：</strong>${taskInfo.timeLength}天</div>
                                   <div class="pet_hd_block_tag"><strong>库存：</strong>${taskInfo.availableStock?c}次</div>
                                   <br>
-                                  <button type="button" class="am-btn am-btn-primary" onclick="receiveTaskById(${taskInfo.id},'${Session["username"]?default("session")}',${taskInfo.availableStock});">领取任务
+                                  <button type="button" class="am-btn am-btn-primary" onclick="receiveTaskById(${taskInfo.id},'${Session['username']?default('session')}',${taskInfo.availableStock});">领取任务
                                   </button>
                             </li>
                         </ul>

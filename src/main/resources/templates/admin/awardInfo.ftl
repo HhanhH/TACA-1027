@@ -38,7 +38,7 @@
 					<form action="${base}/admin/goods/add" method="post"  enctype="multipart/form-data" class="am-form tpl-form-line-form">
 						<div class="am-form-group">
 							<label for="user-name" class="am-u-sm-3 am-form-label">激励ID
-								<span class="tpl-form-line-small-title"ID</span>
+								<span class="tpl-form-line-small-title">ID</span>
 							</label>
 							<div class="am-u-sm-9">
 								<input type="text" class="tpl-form-input" id="user-name" name="ID"

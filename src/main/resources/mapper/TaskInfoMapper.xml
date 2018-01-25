@@ -52,13 +52,13 @@
   <select id="getHotTaskList" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
-    from  IM_B_TASK_INFO where STATUS='ON' order by COUNT desc limit 5
+    from  IM_B_TASK_INFO where STATUS='ON' order by COUNT desc
   </select>
 
   <select id="getNewTaskList" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
-    from  IM_B_TASK_INFO where STATUS='ON' order by CREATE_TIME desc limit 5
+    from  IM_B_TASK_INFO where STATUS='ON' order by CREATE_TIME desc
   </select>
 
   <select id="getTaskListByTimeDesc" resultMap="BaseResultMap">

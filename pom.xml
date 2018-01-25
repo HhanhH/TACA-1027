@@ -5,7 +5,7 @@
 	<groupId>com.spring</groupId>
 	<artifactId>TACA</artifactId>
 	<version>1.0</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -61,7 +61,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-freemarker</artifactId>
 		</dependency>
-
+		<dependency>
+       	 	<groupId>org.springframework.boot</groupId>
+      	  	<artifactId>spring-boot-starter-tomcat</artifactId>
+       	 	<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>net.mingsoft</groupId>
 			<artifactId>shiro-freemarker-tags</artifactId>
@@ -249,8 +253,8 @@
 			  <plugin>  
             <groupId>org.apache.maven.plugins</groupId>  
             <artifactId>maven-jar-plugin</artifactId>  
-            <version>2.6</version>  
-           <!--  <configuration>  
+            
+            <!--  <configuration>  
                 <archive>  
                     <manifest>  
                         <addClasspath>true</addClasspath>  
@@ -260,9 +264,7 @@
                 </archive>  
             </configuration>   -->
         </plugin>  
-       
 		</plugins>
-		
 	</build>
 
 

@@ -41,7 +41,7 @@
                                <a href="${base}/mobile/task/new">最新</a>
                            </li>
                            <li class="am-parent">
-                               <a href="##" class="" >全部</a>
+                               <a href="##" class="" >排序</a>
                                <ul class="am-menu-sub am-collapse  am-avg-sm-3 ">
                                    <li class="">
                                        <a href="../../mobile/task/timeDesc" class="" >时间最近</a>

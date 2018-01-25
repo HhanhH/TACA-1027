@@ -48,10 +48,10 @@
            <br>
             &nbsp;&nbsp;&nbsp;&nbsp;
              <#if goodsInfo.type=='爆款'>
-              <button type="button" class="am-btn am-btn-primary"  onclick="javascript:exchangeGoods(${goodsInfo.id?default(0)?c},${goodsInfo.availableStock},'${Session["username"]?default("session")}')" disabled="true">点击兑换
+              <button type="button" class="am-btn am-btn-primary"  onclick="javascript:exchangeGoods(${goodsInfo.id?default(0)?c},${goodsInfo.availableStock},'${username?default('session')}')" disabled="true">点击兑换
             </button>
              <#else>
-             <button type="button" class="am-btn am-btn-primary"  onclick="javascript:exchangeGoods(${goodsInfo.id?default(0)?c},${goodsInfo.availableStock},'${Session["username"]?default("session")}')">点击兑换
+             <button type="button" class="am-btn am-btn-primary"  onclick="javascript:exchangeGoods(${goodsInfo.id?default(0)?c},${goodsInfo.availableStock},'${username?default('session')}')">点击兑换
             </button>
             </#if>
             <br>

@@ -52,6 +52,7 @@ public class GoodsPageController {
         UserInfo userInfo=userInfoAction.getUserInfoByUM((String)httpSession.getAttribute("username"));
         model.addAttribute("goodsInfo",goodsInfo);
         model.addAttribute("userInfo",userInfo);
+        model.addAttribute("username",(String)httpSession.getAttribute("username"));
         return "mobile/GoodsDetail";
     }
 }
